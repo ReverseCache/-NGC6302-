@@ -61,3 +61,5 @@ ipcMain.on('priceData', (event, message) => {
     sendDataToRenderer)
 })
 
+
+

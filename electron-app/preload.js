@@ -1,14 +1,100 @@
-const { Chart, Ticks } = require('chart.js')
+const { Chart } = require('chart.js')
 const { ipcRenderer } = require('electron')
 const httpHandler = require('./httpHandler.js')
 
 /*TODO:
-    Build Price Chart for each annum until 2016 (Priority) In progress - Format Chart and destroy it when button is pressed
-    Build training mode scenario selector
+    Build Hasura and integrate with it
     Set up user input (Priority)
+    Set up feedback
     Set up dashboard and login page (Priority)
-    Implement testing (Priority)
+    Implement testing
 */
+
+var stockTicker = null;
+
+//Generate the three fundamental indicators to assess
+function generateFundamentalScenario() {
+
+    array = []
+    var max = 20
+    var min = 1
+    while (array.length < 3) {
+        var num = Math.floor(Math.random() * (max - min)) + min
+        let string
+        switch (num) {
+            case 1:
+                string = "CurrentRatio"
+                break
+            case 2:
+                string = "LongTermDebtToCapital"
+                break
+            case 3:
+                string = "DebtToEquityRatio"
+                break
+            case 4:
+                string = "GrossMargin"
+                break
+            case 5:
+                string = "OperatingMargin"
+                break
+            case 6:
+                string = "EbitMargin"
+                break
+            case 7:
+                string = "EbitdaMargin"
+                break
+            case 8:
+                string = "PretaxProfitMargin"
+                break
+            case 9:
+                string = "NetProfitMargin"
+                break
+            case 10:
+                string = "AssetTurnover"
+                break
+            case 11:
+                string = "InventoryTurnoverRatio"
+                break
+            case 12:
+                string = "ReceivableTurnover"
+                break
+            case 13:
+                string = "DaySalesInReceivables"
+                break
+            case 14:
+                string = "ReturnOnEquity"
+                break
+            case 15:
+                string = "ReturnOnTangibleEquity"
+                break
+            case 16:
+                string = "ReturnOnAssets"
+                break
+            case 17:
+                string = "ReturnOnInvestment"
+                break
+            case 18:
+                string = "BookValuePerShare"
+                break
+            case 19:
+                string = "OperatingCashFlowPerShare"
+                break
+            case 20:
+                string = "FreeCashFlowPerShare"
+                break
+        }
+        if (array.indexOf(string) === -1) {
+            array.push(string)
+        }
+    }
+    return array
+}
+
+// Testing the generateFundamentalScenario function
+array = generateFundamentalScenario()
+for (let i = 0; i < array.length; i++) {
+    console.log(array[i])
+}
 
 //Replace the text in the HTML with the data
 const replaceText = (selector, text) => {
@@ -41,10 +127,16 @@ function writeErrorToTable(length, string, message) {
     }
 }
 
+//Chart variable
+var myChart = null
+
 // Chart JS Price Graph
 function displayPriceChart(array) {
+    if (myChart != null) {
+        myChart.destroy()
+    }
     var ctx = document.getElementById('myChart').getContext('2d')
-    var myChart = new Chart(ctx, {
+    myChart = new Chart(ctx, {
         type: 'line',
         data: {
             datasets: [{
@@ -92,7 +184,7 @@ ipcRenderer.on('priceData', (event, message) => {
     displayPriceChart(message)
 })
 
-//Set up collapsible button for the tables -> need to change to setup for all collapsible buttons
+//Set up collapsible button for the tables
 window.addEventListener('DOMContentLoaded', () => {
     var coll = document.getElementsByClassName("collapsible")
     for (let i = 0; i < coll.length; i++) {
@@ -120,21 +212,44 @@ window.addEventListener('DOMContentLoaded', () => {
         var stockname = input.value.toString()
         array[0] = stockname
         console.log(array[0])
+        beginbutton.disabled = false
     }
 
     //Year form
-    var form1 = document.getElementById("yearform")
-    form1.onsubmit = async(e) => {
+    var select = document.getElementById("yearselect")
+    select.onchange = async(e) => {
         e.preventDefault()
-        var input = form1.children[0]
-        var year = parseInt(input.value)
+        var year = parseInt(select.value)
         array[1] = year
         console.log(array[1])
     }
 
+    //Set up begin collapsible button
+    var beginbutton = document.getElementById("beginButton")
+    if(array[0] == null) {
+        beginButton.disabled = true
+    }
+    beginbutton.style.margin = "1em 0 4em 0"
+    beginbutton.onclick = async(e) => {
+        var infobody = document.getElementById("infobody")
+        infobody.style.display = "block"
+        form.style.display = "none"
+        beginbutton.style.display = "none"
+
+        //Replace the header text with stock ticker
+        replaceText('stock', 'Stock: ' + array[0])
+
+        //Update local variable stockname
+        stockTicker = array[0]
+    }
+
+    //Set up getData button to do callbacks to get data
     var button = document.getElementById("getDataButton")
     button.style.margin = "1em 0 4em 0"
     button.onclick = async(e) => {
+
+        var infocontent = document.getElementById("infocontent")
+        infocontent.style.display = "block"
 
         // Set up the callbacks for promisified functions and write the data to the DOM, for chosen ticker and year
         // Need to do something if the calls are invalid
@@ -159,12 +274,47 @@ window.addEventListener('DOMContentLoaded', () => {
             writeErrorToTable(err.arraySize, err.string, err.message)
         })
 
-        //Replace the header text with stock ticker and year
+        //Replace the header text with year
         replaceText('stock', 'Stock: ' + array[0])
         replaceText('year', 'Year: ' + array[1])
 
         //Send a message to IPCMain when button is pressed to retrieve fundamental CSV data
         ipcRenderer.send('indicatorData', array)
         ipcRenderer.send('priceData', array)
+    }
+
+    //Generate Fundamental Indicator Scenarios
+    var array1 = []
+    array1 = generateFundamentalScenario()
+    for (let i = 0; i < array1.length; i++) {
+        indicatorName = array1[i];
+        element = document.getElementById(indicatorName);
+        element.style.display = "initial"
+    }
+
+    //Set up the submit button for fundamental user input, for backend to process
+    var button = document.getElementById("submitButton")
+    button.onclick = async(e) => {
+        var dataObject = {
+            'stockTicker': stockTicker,
+            'indicators' : array1
+        }
+        for (let i = 0; i < array1.length; i++) {
+            indicatorName = array1[i]
+            elements = document.getElementsByName(indicatorName)
+            for (let j = 0; j < elements.length; j++) {
+                radioButton = elements[j]
+                if (radioButton.checked) {
+                    //Make a Javascript object with key value pair, with indicator name as key and strength as value
+                    dataObject[indicatorName] = radioButton.nextElementSibling.innerText 
+                }
+            }
+        }
+
+        //Testing to see if it works => works
+        for (let i = 0; i < array1.length; i++) {
+            console.log(dataObject[array1[i]])
+            console.log(dataObject['indicators'][i])
+        }
     }
 })

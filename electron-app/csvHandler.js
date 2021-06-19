@@ -4,8 +4,6 @@ const bluebird = require('bluebird')
 //Switch statement to get index for the array
 function getYear(year) {
     switch(year) {
-        case 2020:
-            return 0
         case 2019:
             return 1
         case 2018: 
