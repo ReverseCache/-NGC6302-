@@ -1,0 +1,5 @@
+date,current_ratio,longterm_debt_to_capital,debt_to_equity_ratio,gross_margin,operating_margin,ebit_margin,ebitda_margin,pretax_profit_margin,net_profit_margin,asset_turnover,inventory_turnover_ratio,receiveable_turnover,days_sales_in_receivables,roe__return_on_equity,return_on_tangible_equity,roa__return_on_assets,roi__return_on_investment,book_value_per_share,operating_cash_flow_per_share,free_cash_flow_per_share
+2017-06-30,,,,38.5143,25.8039,25.8039,28.0819,22.5885,13.8293,,,,,,,,,,2.6651,2.3575
+2018-06-30,3.1723,,,35.9303,22.3382,22.3382,24.5445,21.373,21.5404,0.7738,5.5127,5.539,65.8963,23.2229,55.9658,16.9804,23.2229,,0.5443,0.5829
+2019-06-30,3.7839,0.404,0.6779,35.666,21.3452,21.3452,23.5403,19.5276,14.0047,0.5838,6.4898,5.79,63.0393,16.4993,37.2056,8.4218,9.833,16.0459,1.9436,1.9114
+2020-06-30,3.9276,0.4401,0.7859,36.5439,20.2959,20.2959,22.588,11.8995,8.12,0.5657,9.1203,6.5164,56.0124,10.5034,30.3082,4.8828,5.8814,16.7211,0.2251,0.4295

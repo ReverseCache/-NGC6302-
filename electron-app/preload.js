@@ -1,25 +1,23 @@
 const { Chart } = require('chart.js')
-const { ipcRenderer } = require('electron')
+const { ipcRenderer, ipcMain } = require('electron')
 const httpHandler = require('./httpHandler.js')
 
 /*TODO:
-    Build Hasura and integrate with it
-    Set up user input (Priority)
-    Set up feedback
-    Set up dashboard and login page (Priority)
+    Set up feedback (Priority)
+    Set up dashboard and login page
     Implement testing
 */
 
 var stockTicker = null;
 
 //Generate the three fundamental indicators to assess
-function generateFundamentalScenario() {
+function generateFundamentalScenario(dataObject, callBack) {
 
-    array = []
-    var max = 20
-    var min = 1
+    let array = []
+    let max = 20
+    let min = 1
     while (array.length < 3) {
-        var num = Math.floor(Math.random() * (max - min)) + min
+        let num = Math.floor(Math.random() * (max - min)) + min
         let string
         switch (num) {
             case 1:
@@ -59,7 +57,7 @@ function generateFundamentalScenario() {
                 string = "ReceivableTurnover"
                 break
             case 13:
-                string = "DaySalesInReceivables"
+                string = "DaysSalesInReceivables"
                 break
             case 14:
                 string = "ReturnOnEquity"
@@ -84,16 +82,24 @@ function generateFundamentalScenario() {
                 break
         }
         if (array.indexOf(string) === -1) {
-            array.push(string)
+            if (!(dataObject[string] === undefined || dataObject[string] === null)) {
+                console.log("Chosen Indicator: " + string)
+                console.log("Chosen Indicator Value: " + dataObject[string])
+                array.push(string)
+            }
         }
     }
-    return array
+    callBack(array)
+    array1 = array
 }
 
-// Testing the generateFundamentalScenario function
-array = generateFundamentalScenario()
-for (let i = 0; i < array.length; i++) {
-    console.log(array[i])
+//Display the radio buttons corresponding to the indicators that the scenario generator produced
+function displayFundamentalScenario(array) {
+    for (let i = 0; i < array.length; i++) {
+        indicatorName = array[i];
+        element = document.getElementById(indicatorName);
+        element.style.display = "initial"
+    }
 }
 
 //Replace the text in the HTML with the data
@@ -111,7 +117,7 @@ function displayLocalData(arr) {
 
 //Write data from http requests to table
 function writeDataToTable(arr, string) {
-    array = []
+    let array = []
     for (let x = 0; x < arr.length; x++) {
         array.push(x.toString())
     }
@@ -135,7 +141,7 @@ function displayPriceChart(array) {
     if (myChart != null) {
         myChart.destroy()
     }
-    var ctx = document.getElementById('myChart').getContext('2d')
+    let ctx = document.getElementById('myChart').getContext('2d')
     myChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -173,20 +179,24 @@ function displayPriceChart(array) {
     })
 }
 
-//When recieving a message on this channel get local indicator csv data
+//When recieving a message on this channel display local indicator csv data
 ipcRenderer.on('indicatorData', (event, message) => {
     displayLocalData(message)
 })
 
-//When receiving a message on this channel get local price csv data
+//When receiving a message on this channel display local price csv data
 ipcRenderer.on('priceData', (event, message) => {
-    console.log(message)
     displayPriceChart(message)
+})
+
+//When receiving a message on this channel, generate fundamental scenario
+ipcRenderer.on('correlationData', (event, message) => {
+    generateFundamentalScenario(message, displayFundamentalScenario)
 })
 
 //Set up collapsible button for the tables
 window.addEventListener('DOMContentLoaded', () => {
-    var coll = document.getElementsByClassName("collapsible")
+    let coll = document.getElementsByClassName("collapsible")
     for (let i = 0; i < coll.length; i++) {
         coll[i].addEventListener("click", () => {
             var content = coll[i].nextElementSibling
@@ -199,39 +209,84 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 })
 
-//Handle year and stock form submissions, and behavior for the get data button
+//Handle hiding and showing dashboard, training mode and glossary
+window.addEventListener('DOMContentLoaded', () => {
+    let dashboard = document.getElementById("dashboard")
+    let training = document.getElementById("training")
+
+    //Default setting
+    let dbool = true
+    let tbool = false
+    let gbool = false
+    dashboard.style.display = "block"
+    
+    let dbutton = document.getElementById("dbutton")
+    dbutton.onclick = () => {
+        if (dbool == false) {
+            dbool = true
+            tbool = false
+            gbool = false
+        }
+        dashboard.style.display =  "block"
+        training.style.display = "none"
+    }
+
+    let tbutton = document.getElementById("tbutton")
+    tbutton.onclick = () => {
+        if(tbool == false) {
+            tbool = true
+            dbool = false
+            gbool = false
+        }
+        dashboard.style.display = "none"
+        training.style.display = "block"
+    }
+
+    let gbutton = document.getElementById("gbutton")
+    gbutton.onclick = () => {
+        if(gbool == false) {
+            gbool = true
+            dbool = false
+            tbool = false  
+        }
+        dashboard.style.display = "none"
+        training.style.display = "none"
+    }
+})
+
+//Handle year and stock form submissions, behavior for the get data button, as well as the submit button to get user input
 window.addEventListener('DOMContentLoaded', () => {
     
-    var array = []
+    let array = []
 
     //Stock form
-    var form = document.getElementById("stockform")
+    let form = document.getElementById("stockform")
     form.onsubmit = async(e) => {
         e.preventDefault()
-        var input = form.children[0]
-        var stockname = input.value.toString()
+        let input = form.children[0]
+        let stockname = input.value.toString()
         array[0] = stockname
         console.log(array[0])
         beginbutton.disabled = false
     }
 
     //Year form
-    var select = document.getElementById("yearselect")
+    let select = document.getElementById("yearselect")
     select.onchange = async(e) => {
         e.preventDefault()
-        var year = parseInt(select.value)
+        let year = parseInt(select.value)
         array[1] = year
         console.log(array[1])
     }
 
     //Set up begin collapsible button
-    var beginbutton = document.getElementById("beginButton")
+    let beginbutton = document.getElementById("beginButton")
     if(array[0] == null) {
         beginButton.disabled = true
     }
     beginbutton.style.margin = "1em 0 4em 0"
     beginbutton.onclick = async(e) => {
-        var infobody = document.getElementById("infobody")
+        let infobody = document.getElementById("infobody")
         infobody.style.display = "block"
         form.style.display = "none"
         beginbutton.style.display = "none"
@@ -241,14 +296,18 @@ window.addEventListener('DOMContentLoaded', () => {
 
         //Update local variable stockname
         stockTicker = array[0]
+        
+        //Generate Fundamental Indicator Scenarios
+        console.log(stockTicker)
+        ipcRenderer.send('correlationData', stockTicker)
     }
 
     //Set up getData button to do callbacks to get data
-    var button = document.getElementById("getDataButton")
-    button.style.margin = "1em 0 4em 0"
-    button.onclick = async(e) => {
+    let getDataButton = document.getElementById("getDataButton")
+    getDataButton.style.margin = "1em 0 4em 0"
+    getDataButton.onclick = async(e) => {
 
-        var infocontent = document.getElementById("infocontent")
+        let infocontent = document.getElementById("infocontent")
         infocontent.style.display = "block"
 
         // Set up the callbacks for promisified functions and write the data to the DOM, for chosen ticker and year
@@ -278,26 +337,18 @@ window.addEventListener('DOMContentLoaded', () => {
         replaceText('stock', 'Stock: ' + array[0])
         replaceText('year', 'Year: ' + array[1])
 
-        //Send a message to IPCMain when button is pressed to retrieve fundamental CSV data
+        //Send a message to IPCMain when button is pressed to retrieve fundamental and price CSV data
         ipcRenderer.send('indicatorData', array)
         ipcRenderer.send('priceData', array)
     }
 
-    //Generate Fundamental Indicator Scenarios
-    var array1 = []
-    array1 = generateFundamentalScenario()
-    for (let i = 0; i < array1.length; i++) {
-        indicatorName = array1[i];
-        element = document.getElementById(indicatorName);
-        element.style.display = "initial"
-    }
-
     //Set up the submit button for fundamental user input, for backend to process
-    var button = document.getElementById("submitButton")
-    button.onclick = async(e) => {
-        var dataObject = {
+    let submitButton = document.getElementById("submitButton")
+    submitButton.onclick = async(e) => {
+        let indicatorArray = Array.from(array1)
+        let dataObject = {
             'stockTicker': stockTicker,
-            'indicators' : array1
+            'indicators' : indicatorArray
         }
         for (let i = 0; i < array1.length; i++) {
             indicatorName = array1[i]
@@ -311,10 +362,19 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        pricePrediction = document.getElementsByName("PricePrediction")
+        for (let i = 0; i < pricePrediction.length; i++) {
+            radioButton = pricePrediction[i]
+            if (radioButton.checked) {
+                dataObject['pricePrediction'] = radioButton.nextElementSibling.innerText
+            }
+        }   
+
         //Testing to see if it works => works
         for (let i = 0; i < array1.length; i++) {
-            console.log(dataObject[array1[i]])
+            console.log(dataObject[indicatorArray[i]])
             console.log(dataObject['indicators'][i])
         }
+        console.log(dataObject['pricePrediction'])
     }
 })
