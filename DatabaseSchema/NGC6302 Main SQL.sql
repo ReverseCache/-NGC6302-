@@ -509,7 +509,7 @@ CREATE INDEX fkIdx_320 ON Financials."Balance Sheet"
 --
 -- Table structure for table `user_details`
 --
-
+--
 CREATE TABLE IF NOT EXISTS `user_details` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) DEFAULT NULL,
