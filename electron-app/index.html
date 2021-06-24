@@ -532,7 +532,7 @@
                             </div>
                             <div id = "LongTermDebtToCapital" class = "hidden">
                                 <p>
-                                    <h4>Longterm Debt to Capital</h4>
+                                    <h4>Longterm Debt To Capital</h4>
                                     <input type = "radio" id = "LongtermDebtToCapitalStrong" name = "LongTermDebtToCapital">
                                     <label for = "LongtermDebtToCapitalStrong">Strong</label>
                                     <input type = "radio" id = "LongtermDebtToCapitalMedium" name = "LongTermDebtToCapital">
@@ -651,9 +651,9 @@
                                     <label for = "ReceivableTurnoverWeak">Weak</label>
                                 </p>
                             </div>
-                            <div id = "DaySalesInReceivables" class = "hidden">
+                            <div id = "DaysSalesInReceivables" class = "hidden">
                                 <p>
-                                    <h4>Day Sales in Receivables</h4>
+                                    <h4>Day Sales In Receivables</h4>
                                     <input type = "radio" id = "DaysSalesInReceivablesStrong" name = "DaysSalesInReceivables">
                                     <label for = "DaysSalesInReceivablesStrong">Strong</label>
                                     <input type = "radio" id = "DaysSalesInReceivablesMedium" name = "DaysSalesInReceivables">
@@ -664,7 +664,7 @@
                             </div>
                             <div id = "ReturnOnEquity" class = "hidden">
                                 <p>
-                                    <h4>Return on Equity</h4>
+                                    <h4>Return On Equity</h4>
                                     <input type = "radio" id = "ReturnOnEquityStrong" name = "ReturnOnEquity">
                                     <label for = "ReturnOnEquityStrong">Strong</label>
                                     <input type = "radio" id = "ReturnOnEquityMedium" name = "ReturnOnEquity">
@@ -675,7 +675,7 @@
                             </div>
                             <div id = "ReturnOnTangibleEquity" class = "hidden">
                                 <p>
-                                    <h4>Return on Tangible Equity</h4>
+                                    <h4>Return On Tangible Equity</h4>
                                     <input type = "radio" id = "ReturnOnTangibleEquityStrong" name = "ReturnOnTangibleEquity">
                                     <label for = "ReturnOnTangibleEquityStrong">Strong</label>
                                     <input type = "radio" id = "ReturnOnTangibleEquityMedium" name = "ReturnOnTangibleEquity">
@@ -686,7 +686,7 @@
                             </div>
                             <div id = "ReturnOnAssets" class = "hidden">
                                 <p>
-                                    <h4>Return on Assets</h4>
+                                    <h4>Return On Assets</h4>
                                     <input type = "radio" id = "ReturnOnAssetsStrong" name = "ReturnOnAssets">
                                     <label for = "ReturnOnAssetsStrong">Strong</label>
                                     <input type = "radio" id = "ReturnOnAssetsMedium" name = "ReturnOnAssets">
@@ -750,6 +750,84 @@
                                 <button type="button" class = "spacing upper" id = "submitButton">Submit</button>
                             </div>
                         </div>
+                    </div>
+                    <div id = "infofeedback" class = "hidden">
+                        <h3 class = "spacing">Stock Evaluation Feedback</h2>
+                        <h3>Your Evaluation:</h3>
+                        <div>
+                            <h4 id = "userinput0header"></h4>
+                            <p> 
+                                <input type = "radio" id = "userinput0Strong" name = "userinput0">
+                                <label for = "userinput0Strong">Strong</label>
+                                <input type = "radio" id = "userinput0Medium" name = "userinput0">
+                                <label for = "userinput0Medium">Medium</label>
+                                <input type = "radio" id = "userinput0Weak" name = "userinput0">
+                                <label for = "userinput0Weak">Weak</label>
+                            </p>
+                            <p id = "userinput0feedback"></p>
+                        </div>
+                        <div>
+                            <h4 id = "userinput1header"></h4>
+                            <p> 
+                                <input type = "radio" id = "userinput1Strong" name = "userinput1">
+                                <label for = "userinput1Strong">Strong</label>
+                                <input type = "radio" id = "userinput1Medium" name = "userinput1">
+                                <label for = "userinput1Medium">Medium</label>
+                                <input type = "radio" id = "userinput1Weak" name = "userinput1">
+                                <label for = "userinput1Weak">Weak</label>
+                                <p id = "userinput1feedback"></p>
+                            </p>
+                        </div>
+                        <div>
+                            <h4 id = "userinput2header"></h4>
+                            <p> 
+                                <input type = "radio" id = "userinput2Strong" name = "userinput2">
+                                <label for = "userinput2Strong">Strong</label>
+                                <input type = "radio" id = "userinput2Medium" name = "userinput2">
+                                <label for = "userinput2Medium">Medium</label>
+                                <input type = "radio" id = "userinput2Weak" name = "userinput2">
+                                <label for = "userinput2Weak">Weak</label>
+                            </p>
+                            <p id = "userinput2feedback"></p>
+                        </div>
+                        <h3>Stock Evaluator's Evaluation:</h3>
+                        <div>
+                            <h4 id = "input0header"></h4>
+                            <p> 
+                                <input type = "radio" id = "input0Strong" name = "input0">
+                                <label for = "input0Strong">Strong</label>
+                                <input type = "radio" id = "input0Medium" name = "input0">
+                                <label for = "input0Medium">Medium</label>
+                                <input type = "radio" id = "input0Weak" name = "input0">
+                                <label for = "input0Weak">Weak</label>
+                            </p>
+                        </div>
+                        <div>
+                            <h4 id = "input1header"></h4>
+                            <p> 
+                                <input type = "radio" id = "input1Strong" name = "input1">
+                                <label for = "input1Strong">Strong</label>
+                                <input type = "radio" id = "input1Medium" name = "input1">
+                                <label for = "input1Medium">Medium</label>
+                                <input type = "radio" id = "input1Weak" name = "input1">
+                                <label for = "input1Weak">Weak</label>
+                            </p>
+                        </div>
+                        <div>
+                            <h4 id = "input2header"></h4>
+                            <p> 
+                                <input type = "radio" id = "input2Strong" name = "input2">
+                                <label for = "input2Strong">Strong</label>
+                                <input type = "radio" id = "input2Medium" name = "input2">
+                                <label for = "input2Medium">Medium</label>
+                                <input type = "radio" id = "input2Weak" name = "input2">
+                                <label for = "input2Weak">Weak</label>
+                            </p>
+                        </div>
+                        <p>If you are unsure about any of the fundamental indicators, 
+                            please refer to the glossary for more information
+                        </p>
+                        <button type = "button" class = "spacing" id = "finishButton">Finish</button>
                     </div>
                 </div>
             </section>
