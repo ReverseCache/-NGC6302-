@@ -4,8 +4,6 @@ const bluebird = require('bluebird')
 //Switch statement to get index for the array
 function getYear(year) {
     switch(year) {
-        case 2020:
-            return 0
         case 2019:
             return 1
         case 2018: 
@@ -20,6 +18,7 @@ function getYear(year) {
 readFilePromise = bluebird.promisify(fs.readFile)
 readIndicatorCSVFilePromise = bluebird.promisify(readIndicatorCSVFile)
 readPriceCSVFilePromise = bluebird.promisify(readPriceCSVFile)
+readCorrelationCSVFilePromise = bluebird.promisify(readCorrelationCSVFile)
 
 //Passes an array of indicator values for that year
 function readIndicatorCSVFile(fileURL, mimeType, win, year, callBack) {
@@ -38,6 +37,14 @@ function readPriceCSVFile(fileURL, mimeType, win, year, callBack) {
         callBack(win, array, 'priceData')
     }).catch((error) => {
         console.log("Error reading file", error)
+    })
+}
+
+//Passes a javascript object with indicator names as keys and correlation value as value
+function readCorrelationCSVFile(fileURL, mimeType, win, callBack) {
+    readCSVFile(fileURL, mimeType).then((contents) => {
+        dataObject = handleCorrelationArray(processCSVData(contents))
+        callBack(win, dataObject, 'correlationData') 
     })
 }
 
@@ -83,7 +90,6 @@ function handleFundamentalArray(arr, year) {
     return arr[2][getYear(year)]
 }
 
-//TODO: Place object key value pairs into array and return it
 function handlePriceArray(arr, year) {
     array = []
     datalines = arr[2]
@@ -101,6 +107,48 @@ function handlePriceArray(arr, year) {
     return array
 }
 
+function handleCorrelationArray(arr) {
+    headers = arr[1]
+    data = arr[2]
+    //console.log(data[0][1])
+    let dataObject = {
+    } 
+
+    for (let i = 0; i < headers.length; i++) {
+        var str = headers[i]
+        if (str == "roe__return_on_equity") {
+            let str1 = "ReturnOnEquity"
+            headers[i] = str1
+        } else if (str == "roa__return_on_assets") {
+            let str1 = "ReturnOnAssets"
+            headers[i] = str1 
+        } else if (str == "roi__return_on_investment") {
+            let str1 = "ReturnOnInvestment"
+            headers[i] = str1
+        } else if (str == "receiveable_turnover") {
+            let str1 = "ReceivableTurnover"
+            headers[i] = str1
+        } else {
+            let str1 = toCamelCaps(str)
+            headers[i] = str1
+        }
+    }
+    for (let i = 1; i < headers.length; i++) {
+        dataObject[headers[i]] = data[0][i]
+        console.log(headers[i]) 
+        console.log(data[0][i])
+        console.log(dataObject[headers[i]])
+    }
+    return dataObject
+}
+
+function toCamelCaps(str) {
+    str1 = str.replace(/_([a-z])/g, function (g) { return g[1].toUpperCase(); })
+    return str1.charAt(0).toUpperCase() + str1.slice(1)
+}
+
+
 //Export the functions
 module.exports.readIndicatorCSVFile = readIndicatorCSVFilePromise
 module.exports.readPriceCSVFile = readPriceCSVFilePromise
+module.exports.readCorrelationCSVFile = readCorrelationCSVFilePromise

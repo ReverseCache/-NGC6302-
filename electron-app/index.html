@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>NGC 6302</title>
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval';" />
     <link rel="stylesheet" href="assets/hyperspace/css/main.css" />
 </head>
 <body style="background: white;">
@@ -11,584 +11,827 @@
         <div class = "inner">
             <nav>
                 <ul>
-                    <li><a href="#intro">Dashboard</a></li>
-                    <li><a href="#one">Traning Mode</a></li>
-                    <li><a href="#two">Live Mode</a></li>
-                    <li><a href="#three">Help</a></li>
+                    <li><a href="#intro" id = "dbutton">Dashboard</a></li>
+                    <li><a href="#one" id = "tbutton">Traning Mode</a></li>
+                    <li><a href="#two" id = "gbutton">Glossary</a></li>
                 </ul>
             </nav>
         </div>
     </section>
 
-    <div id="wrapper">
-        <section id="intro" class="wrapper style1 fullscreen fade-up">
-            <div class = "inner">
-                <h1>Training Mode</h1>
-                <h2 id = "stock">Stock:</h2>
-                <form id = "stockform">
-                    <input type = "text" class = "spacing" placeholder = "Key in stock ticker here"> 
-                </form>
-                <h2 id = "year">Year:</h2>
-                <form id = "yearform">
-                    <input type = "text" class = "spacing" placeholder = "Key in year here"> 
-                </form>
-                <button type="button" id = "getDataButton" class = "spacing">Get Data</button>
-                <h3>Stock Price:</h3>
-                <canvas id = "myChart" width = "100px" height = "100px" class = "spacing"></canvas>
-                <h3>Information:</h3>
-                <button type = "button" class = "collapsible" id = "coll0">Balance Sheet</button>
-                <table class = "content" id = "content0">
-                    <tr>
-                        <th>Fiscal Date Ending</th>
-                        <td id = "data0">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Reported Currency</th>
-                        <td id = "data1">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Total Assets</th>
-                        <td id = "data2">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Cash and Cash Equivalents at Carrying Value</th>
-                        <td id = "data3">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Cash and Short Term Investments</th>
-                        <td id = "data4">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Inventory</th>
-                        <td id = "data5">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Current Net Receivables</th>
-                        <td id = "data6">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Total Noncurrent Assets</th>
-                        <td id = "data7">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Property Plant Equipment</th>
-                        <td id = "data8">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Accumulated Depcreciation Amortization PPE</th>
-                        <td id = "data9">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Intangible Assets</th>
-                        <td id = "data10">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Intangible Assets Excluding Goodwill</th>
-                        <td id = "data11">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Goodwill</th>
-                        <td id = "data12">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Investments</th>
-                        <td id = "data13">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Long-term Investments</th>
-                        <td id = "data14">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Short-term Investments</th>
-                        <td id = "data15">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Other Current Assets</th>
-                        <td id = "data16">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Other Noncurrent Assets</th>
-                        <td id = "data17">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Total Liabilities</th>
-                        <td id = "data18">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Total Current Liabilities</th>
-                        <td id = "data19">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Current Accounts Payable</th>
-                        <td id = "data20">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Deferred Revenue</th>
-                        <td id = "data21">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Current Debt</th>
-                        <td id = "data22">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Short Term Debt</th>
-                        <td id = "data23">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Total Noncurrent Liablities</th>
-                        <td id = "data24">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Capital Lease Obligations</th>
-                        <td id = "data25">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Long Term Debt</th>
-                        <td id = "data26">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Current Long Term Debt</th>
-                        <td id = "data27">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Noncurrent Long Term Debt</th>
-                        <td id = "data28">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Total Debt</th>
-                        <td id = "data29">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Other Current Liabilities</th>
-                        <td id = "data30">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Other Noncurrent Liabilities</th>
-                        <td id = "data31">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Total Shareholder Equity</th>
-                        <td id = "data32">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Treasury Stock</th>
-                        <td id = "data33">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Retained Earnings</th>
-                        <td id = "data34">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Common Stock</th>
-                        <td id = "data35">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Common Stock Share Outstanding</th>
-                        <td id = "data36">Loading...</td>
-                    </tr>
-                </table>
-                <button type = "button" class = "collapsible" id = "coll1">Income Statement</button>
-                <table class = "content" id = "content1">
-                    <tr>
-                        <th>Fiscal Date Ending</th>
-                        <td id = "idata0">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Reported Currency</th>
-                        <td id = "idata1">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Gross Profit</th>
-                        <td id = "idata2">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Total Revenue</th>
-                        <td id = "idata3">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Cost of Revenue</th>
-                        <td id = "idata4">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Cost of Goods And Services Sold</th>
-                        <td id = "idata5">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Operating Income</th>
-                        <td id = "idata6">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Seling General and Administrative</th>
-                        <td id = "idata7">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Research and Development</th>
-                        <td id = "idata8">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Operating Expenses</th>
-                        <td id = "idata9">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Net Investment Income</th>
-                        <td id = "idata10">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Net Interest Income</th>
-                        <td id = "idata11">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Interest Income</th>
-                        <td id = "idata12">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Interest Expense</th>
-                        <td id = "idata13">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Non Interest Income</th>
-                        <td id = "idata14">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Other Non Operating Income</th>
-                        <td id = "idata15">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Depreciation</th>
-                        <td id = "idata16">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Depreciation and Amortization</th>
-                        <td id = "idata17">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Income Before Tax</th>
-                        <td id = "idata18">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Income Tax Expense</th>
-                        <td id = "idata19">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Interest and Debt Expense</th>
-                        <td id = "idata20">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Net Income from Continuing Operations</th>
-                        <td id = "idata21">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Net Comprehensive Income of Tax</th>
-                        <td id = "idata22">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Ebit</th>
-                        <td id = "idata23">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Ebitda</th>
-                        <td id = "idata24">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Net Income</th>
-                        <td id = "idata25">Loading...</td>
-                    </tr>
-                </table>
-                <button type = "button" class = "collapsible" id = "coll2">Cash Flow</button>
-                <table class = "content" id = "content1">
-                    <tr>
-                        <th>Fiscal Date Ending</th>
-                        <td id = "cdata0">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Reported Currency</th>
-                        <td id = "cdata1">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Operating Cash Flow</th>
-                        <td id = "cdata2">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Payments for Operating Activities</th>
-                        <td id = "cdata3">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Proceeds from Operating Activities</th>
-                        <td id = "cdata4">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Change in Operating Liablities</th>
-                        <td id = "cdata5">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Change in Operating Assets</th>
-                        <td id = "cdata6">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Depreciation Depletion and Amortization</th>
-                        <td id = "cdata7">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Capital Expenditures</th>
-                        <td id = "cdata8">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Change in Receivables</th>
-                        <td id = "cdata9">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Change in Inventory</th>
-                        <td id = "cdata10">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Profit Loss</th>
-                        <td id = "cdata11">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Cash Flow from Investment</th>
-                        <td id = "cdata12">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Cash Flow from Financing</th>
-                        <td id = "cdata13">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Proceeds from Repayments of Short Term Debt</th>
-                        <td id = "cdata14">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Payments from Repurchase of Common Stock</th>
-                        <td id = "cdata15">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Payments for Repurchase of Equity</th>
-                        <td id = "cdata16">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Payments for Repurchase of Preferred Stock</th>
-                        <td id = "cdata17">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Dividend Payout</th>
-                        <td id = "cdata18">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Dividend Payout Common Stock</th>
-                        <td id = "cdata19">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Dividend Payout Preferred Stock</th>
-                        <td id = "cdata20">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Proceeds from Issuance of Common Stock</th>
-                        <td id = "cdata21">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Net Proceeds From Issuance of Long Term Debt and Capital Securities</th>
-                        <td id = "cdata22">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Proceeds from Issuance of Preferred Stock</th>
-                        <td id = "cdata23">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Proceeds From Repurchase of Equity</th>
-                        <td id = "cdata24">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Proceeds from Sale of Treasury Stock</th>
-                        <td id = "cdata25">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Change in Cash and Cash Equivalents</th>
-                        <td id = "cdata26">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Change in Exchange Rate</th>
-                        <td id = "cdata27">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Net Income</th>
-                        <td id = "cdata28">Loading...</td>
-                    </tr>
-                </table>
-                <button type = "button" class = "collapsible" id = "coll3">Key Fundamental Indicators</button>
-                <table class = "content" id = "content1">
-                    <tr>
-                        <th>Fiscal Date Ending</th>
-                        <td id = "fdata0">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Current Ratio</th>
-                        <td id = "fdata1">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Longterm Debt to Capital</th>
-                        <td id = "fdata2">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Debt to Equity Ratio</th>
-                        <td id = "fdata3">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Gross Margin</th>
-                        <td id = "fdata4">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Operating Margin</th>
-                        <td id = "fdata5">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Ebit Margin</th>
-                        <td id = "fdata6">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Ebitda Margin</th>
-                        <td id = "fdata7">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Pretax Profit Margin</th>
-                        <td id = "fdata8">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Net Profit Margin</th>
-                        <td id = "fdata9">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Asset Turnover</th>
-                        <td id = "fdata10">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Inventory Turnover Ratio</th>
-                        <td id = "fdata11">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Receivable Turnover</th>
-                        <td id = "fdata12">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Days Sales in Receivables</th>
-                        <td id = "fdata13">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Return on Equity</th>
-                        <td id = "fdata14">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Return on Tangible Equity</th>
-                        <td id = "fdata15">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Return on Assets</th>
-                        <td id = "fdata16">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Return on Investment</th>
-                        <td id = "fdata17">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Book Value per Share</th>
-                        <td id = "fdata18">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Operating Cash Flow Per Share</th>
-                        <td id = "fdata19">Loading...</td>
-                    </tr>
-                    <tr>
-                        <th>Free Cash Flow Per Share</th>
-                        <td id = "fdata20">Loading...</td>
-                    </tr>
-                </table>
-                <h3 class = "spacing">Enter Your Stock Evaluation:</h3>
-                <h4 class = "spacing">Current Ratio</h4>
-                <button type="button">Strong</button>
-                <button type="button">Medium</button>
-                <button type="button">Weak</button>
-                <h4 class = "spacing">Longterm Debt to Capital</h4>
-                <button type="button">Strong</button>
-                <button type="button">Medium</button>
-                <button type="button">Weak</button>
-                <h4 class = "spacing">Debt to Equity Ratio</h4>
-                <button type="button">Strong</button>
-                <button type="button">Medium</button>
-                <button type="button">Weak</button>
-                <h4 class = "spacing">Gross Margin</h4>
-                <button type="button">Strong</button>
-                <button type="button">Medium</button>
-                <button type="button">Weak</button>
-                <h4 class = "spacing">Operating Margin</h4>
-                <button type="button">Strong</button>
-                <button type="button">Medium</button>
-                <button type="button">Weak</button>
-                <h4 class = "spacing">Ebit Margin</h4>
-                <button type="button">Strong</button>
-                <button type="button">Medium</button>
-                <button type="button">Weak</button>
-                <h4 class = "spacing">Ebitda Margin</h4>
-                <button type="button">Strong</button>
-                <button type="button">Medium</button>
-                <button type="button">Weak</button>
-                <h4 class = "spacing">Pretax Profit Margin</h4>
-                <button type="button">Strong</button>
-                <button type="button">Medium</button>
-                <button type="button">Weak</button>
-                <h4 class = "spacing">Net Profit Margin</h4>
-                <button type="button">Strong</button>
-                <button type="button">Medium</button>
-                <button type="button">Weak</button>
-                <h4 class = "spacing">Asset Turnover</h4>
-                <button type="button">Strong</button>
-                <button type="button">Medium</button>
-                <button type="button">Weak</button>
-                <h4 class = "spacing">Inventory Turnover Ratio</h4>
-                <button type="button">Strong</button>
-                <button type="button">Medium</button>
-                <button type="button">Weak</button>
-                <h4 class = "spacing">Receivable Turnover</h4>
-                <button type="button">Strong</button>
-                <button type="button">Medium</button>
-                <button type="button">Weak</button>
-                <h4 class = "spacing">Day Sales in Receivables</h4>
-                <button type="button">Strong</button>
-                <button type="button">Medium</button>
-                <button type="button">Weak</button>
-                <h4 class = "spacing">Return on Equity</h4>
-                <button type="button">Strong</button>
-                <button type="button">Medium</button>
-                <button type="button">Weak</button>
-                <h4 class = "spacing">Return on Tangible Equity</h4>
-                <button type="button">Strong</button>
-                <button type="button">Medium</button>
-                <button type="button">Weak</button>
-                <h4 class = "spacing">Return on Assets</h4>
-                <button type="button">Strong</button>
-                <button type="button">Medium</button>
-                <button type="button">Weak</button>
-                <h4 class = "spacing">Return on Investment</h4>
-                <button type="button">Strong</button>
-                <button type="button">Medium</button>
-                <button type="button">Weak</button>
-                <h4 class = "spacing">Book Value per Share</h4>
-                <button type="button">Strong</button>
-                <button type="button">Medium</button>
-                <button type="button">Weak</button>
-                <h4 class = "spacing">Operating Cash Flow Per Share</h4>
-                <button type="button">Strong</button>
-                <button type="button">Medium</button>
-                <button type="button">Weak</button>
-                <h4 class = "spacing">Free Cash Flow Per Share</h4>
-                <button type="button">Strong</button>
-                <button type="button">Medium</button>
-                <button type="button">Weak</button>
-                <h4 class = "spacing">Price Prediction</h4>
-                <button type="button">Rise</button>
-                <button type="button">Fall</button>
-                <div>
-                    <button type="button" class = "spacing upper">Submit</button>
+    <div id = "wrapper">
+        <div id = "dashboard" class = "hidden">
+            <section id = "intro" class = "wrapper style1 fullscreen fade-up">
+                <div class = "inner">
+                    <h1>Dashboard</h1>
+                    <h2>Welcome to NGC 6302</h2>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
+
+        <div id="training" class = "hidden">
+            <section id="one" class="wrapper style1 fullscreen fade-up">
+                <div class = "inner">
+                    <h1>Training Mode</h1>
+                    <h2 id = "stock">Stock:</h2>
+                    <form id = "stockform">
+                        <input type = "text" class = "spacing" placeholder = "Key in stock ticker here"> 
+                    </form>
+                    <button type = "button" id = "beginButton" class = "spacing">Begin</button>
+                    <div id = "infobody" class = "content">
+                        <h2 id = "year">Year:</h2>
+                        <form id = "yearform">
+                            <select name = "yearselect" id = "yearselect">
+                                <option value = "" disabled selected>Select year here</option>
+                                <option value = "2019">2019</option>
+                                <option value = "2018">2018</option>
+                                <option value = "2017">2017</option>
+                                <option value = "2016">2016</option>
+                            </select>
+                        </form>
+                        <button type="button" id = "getDataButton" class = "spacing">Get Data</button>
+                        <div class = "content" id = "infocontent">
+                            <h3>Stock Price:</h3>
+                            <canvas id = "myChart" width = "100px" height = "100px" class = "spacing"></canvas>
+                            <h3>Information:</h3>
+                            <button type = "button" class = "collapsible" id = "coll0">Balance Sheet</button>
+                            <table class = "content" id = "content0">
+                                <tr>
+                                    <th>Fiscal Date Ending</th>
+                                    <td id = "data0">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Reported Currency</th>
+                                    <td id = "data1">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Total Assets</th>
+                                    <td id = "data2">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Cash and Cash Equivalents at Carrying Value</th>
+                                    <td id = "data3">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Cash and Short Term Investments</th>
+                                    <td id = "data4">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Inventory</th>
+                                    <td id = "data5">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Current Net Receivables</th>
+                                    <td id = "data6">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Total Noncurrent Assets</th>
+                                    <td id = "data7">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Property Plant Equipment</th>
+                                    <td id = "data8">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Accumulated Depcreciation Amortization PPE</th>
+                                    <td id = "data9">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Intangible Assets</th>
+                                    <td id = "data10">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Intangible Assets Excluding Goodwill</th>
+                                    <td id = "data11">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Goodwill</th>
+                                    <td id = "data12">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Investments</th>
+                                    <td id = "data13">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Long-term Investments</th>
+                                    <td id = "data14">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Short-term Investments</th>
+                                    <td id = "data15">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Other Current Assets</th>
+                                    <td id = "data16">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Other Noncurrent Assets</th>
+                                    <td id = "data17">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Total Liabilities</th>
+                                    <td id = "data18">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Total Current Liabilities</th>
+                                    <td id = "data19">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Current Accounts Payable</th>
+                                    <td id = "data20">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Deferred Revenue</th>
+                                    <td id = "data21">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Current Debt</th>
+                                    <td id = "data22">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Short Term Debt</th>
+                                    <td id = "data23">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Total Noncurrent Liablities</th>
+                                    <td id = "data24">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Capital Lease Obligations</th>
+                                    <td id = "data25">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Long Term Debt</th>
+                                    <td id = "data26">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Current Long Term Debt</th>
+                                    <td id = "data27">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Noncurrent Long Term Debt</th>
+                                    <td id = "data28">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Total Debt</th>
+                                    <td id = "data29">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Other Current Liabilities</th>
+                                    <td id = "data30">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Other Noncurrent Liabilities</th>
+                                    <td id = "data31">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Total Shareholder Equity</th>
+                                    <td id = "data32">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Treasury Stock</th>
+                                    <td id = "data33">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Retained Earnings</th>
+                                    <td id = "data34">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Common Stock</th>
+                                    <td id = "data35">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Common Stock Share Outstanding</th>
+                                    <td id = "data36">Loading...</td>
+                                </tr>
+                            </table>
+                            <button type = "button" class = "collapsible" id = "coll1">Income Statement</button>
+                            <table class = "content" id = "content1">
+                                <tr>
+                                    <th>Fiscal Date Ending</th>
+                                    <td id = "idata0">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Reported Currency</th>
+                                    <td id = "idata1">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Gross Profit</th>
+                                    <td id = "idata2">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Total Revenue</th>
+                                    <td id = "idata3">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Cost of Revenue</th>
+                                    <td id = "idata4">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Cost of Goods And Services Sold</th>
+                                    <td id = "idata5">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Operating Income</th>
+                                    <td id = "idata6">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Seling General and Administrative</th>
+                                    <td id = "idata7">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Research and Development</th>
+                                    <td id = "idata8">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Operating Expenses</th>
+                                    <td id = "idata9">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Net Investment Income</th>
+                                    <td id = "idata10">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Net Interest Income</th>
+                                    <td id = "idata11">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Interest Income</th>
+                                    <td id = "idata12">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Interest Expense</th>
+                                    <td id = "idata13">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Non Interest Income</th>
+                                    <td id = "idata14">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Other Non Operating Income</th>
+                                    <td id = "idata15">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Depreciation</th>
+                                    <td id = "idata16">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Depreciation and Amortization</th>
+                                    <td id = "idata17">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Income Before Tax</th>
+                                    <td id = "idata18">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Income Tax Expense</th>
+                                    <td id = "idata19">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Interest and Debt Expense</th>
+                                    <td id = "idata20">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Net Income from Continuing Operations</th>
+                                    <td id = "idata21">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Net Comprehensive Income of Tax</th>
+                                    <td id = "idata22">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Ebit</th>
+                                    <td id = "idata23">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Ebitda</th>
+                                    <td id = "idata24">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Net Income</th>
+                                    <td id = "idata25">Loading...</td>
+                                </tr>
+                            </table>
+                            <button type = "button" class = "collapsible" id = "coll2">Cash Flow</button>
+                            <table class = "content" id = "content1">
+                                <tr>
+                                    <th>Fiscal Date Ending</th>
+                                    <td id = "cdata0">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Reported Currency</th>
+                                    <td id = "cdata1">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Operating Cash Flow</th>
+                                    <td id = "cdata2">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Payments for Operating Activities</th>
+                                    <td id = "cdata3">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Proceeds from Operating Activities</th>
+                                    <td id = "cdata4">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Change in Operating Liablities</th>
+                                    <td id = "cdata5">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Change in Operating Assets</th>
+                                    <td id = "cdata6">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Depreciation Depletion and Amortization</th>
+                                    <td id = "cdata7">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Capital Expenditures</th>
+                                    <td id = "cdata8">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Change in Receivables</th>
+                                    <td id = "cdata9">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Change in Inventory</th>
+                                    <td id = "cdata10">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Profit Loss</th>
+                                    <td id = "cdata11">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Cash Flow from Investment</th>
+                                    <td id = "cdata12">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Cash Flow from Financing</th>
+                                    <td id = "cdata13">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Proceeds from Repayments of Short Term Debt</th>
+                                    <td id = "cdata14">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Payments from Repurchase of Common Stock</th>
+                                    <td id = "cdata15">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Payments for Repurchase of Equity</th>
+                                    <td id = "cdata16">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Payments for Repurchase of Preferred Stock</th>
+                                    <td id = "cdata17">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Dividend Payout</th>
+                                    <td id = "cdata18">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Dividend Payout Common Stock</th>
+                                    <td id = "cdata19">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Dividend Payout Preferred Stock</th>
+                                    <td id = "cdata20">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Proceeds from Issuance of Common Stock</th>
+                                    <td id = "cdata21">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Net Proceeds From Issuance of Long Term Debt and Capital Securities</th>
+                                    <td id = "cdata22">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Proceeds from Issuance of Preferred Stock</th>
+                                    <td id = "cdata23">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Proceeds From Repurchase of Equity</th>
+                                    <td id = "cdata24">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Proceeds from Sale of Treasury Stock</th>
+                                    <td id = "cdata25">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Change in Cash and Cash Equivalents</th>
+                                    <td id = "cdata26">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Change in Exchange Rate</th>
+                                    <td id = "cdata27">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Net Income</th>
+                                    <td id = "cdata28">Loading...</td>
+                                </tr>
+                            </table>
+                            <button type = "button" class = "collapsible" id = "coll3">Key Fundamental Indicators</button>
+                            <table class = "content" id = "content1">
+                                <tr>
+                                    <th>Fiscal Date Ending</th>
+                                    <td id = "fdata0">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Current Ratio</th>
+                                    <td id = "fdata1">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Longterm Debt to Capital</th>
+                                    <td id = "fdata2">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Debt to Equity Ratio</th>
+                                    <td id = "fdata3">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Gross Margin</th>
+                                    <td id = "fdata4">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Operating Margin</th>
+                                    <td id = "fdata5">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Ebit Margin</th>
+                                    <td id = "fdata6">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Ebitda Margin</th>
+                                    <td id = "fdata7">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Pretax Profit Margin</th>
+                                    <td id = "fdata8">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Net Profit Margin</th>
+                                    <td id = "fdata9">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Asset Turnover</th>
+                                    <td id = "fdata10">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Inventory Turnover Ratio</th>
+                                    <td id = "fdata11">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Receivable Turnover</th>
+                                    <td id = "fdata12">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Days Sales in Receivables</th>
+                                    <td id = "fdata13">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Return on Equity</th>
+                                    <td id = "fdata14">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Return on Tangible Equity</th>
+                                    <td id = "fdata15">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Return on Assets</th>
+                                    <td id = "fdata16">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Return on Investment</th>
+                                    <td id = "fdata17">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Book Value per Share</th>
+                                    <td id = "fdata18">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Operating Cash Flow Per Share</th>
+                                    <td id = "fdata19">Loading...</td>
+                                </tr>
+                                <tr>
+                                    <th>Free Cash Flow Per Share</th>
+                                    <td id = "fdata20">Loading...</td>
+                                </tr>
+                            </table>
+                            <h3 class = "spacing">Enter Your Stock Evaluation:</h3>
+                            <div id = "CurrentRatio" class = "hidden">
+                                <p>
+                                    <h4>Current Ratio</h4>
+                                    <input type = "radio" id = "CurrentRatioStrong" name = "CurrentRatio">
+                                    <label for = "CurrentRatioStrong">Strong</label>
+                                    <input type = "radio" id = "CurrentRatioMedium" name = "CurrentRatio">
+                                    <label for = "CurrentRatioMedium">Medium</label>
+                                    <input type = "radio" id = "CurrentRatioWeak" name = "CurrentRatio">
+                                    <label for = "CurrentRatioWeak">Weak</label>
+                                </p>
+                            </div>
+                            <div id = "LongTermDebtToCapital" class = "hidden">
+                                <p>
+                                    <h4>Longterm Debt To Capital</h4>
+                                    <input type = "radio" id = "LongtermDebtToCapitalStrong" name = "LongTermDebtToCapital">
+                                    <label for = "LongtermDebtToCapitalStrong">Strong</label>
+                                    <input type = "radio" id = "LongtermDebtToCapitalMedium" name = "LongTermDebtToCapital">
+                                    <label for = "LongtermDebtToCapitalMedium">Medium</label>
+                                    <input type = "radio" id = "LongTermDebtToCapitalWeak" name = "LongTermDebtToCapital">
+                                    <label for = "LongTermDebtToCapitalWeak">Weak</label>
+                                </p>
+                            </div>
+                            <div id = "DebtToEquityRatio" class = "hidden">
+                                <p>
+                                    <h4>Debt to Equity Ratio</h4>
+                                    <input type = "radio" id = "DebtToEquityRatioStrong" name = "DebtToEquityRatio">
+                                    <label for = "DebtToEquityRatioStrong">Strong</label>
+                                    <input type = "radio" id = "DebtToEquityRatioMedium" name = "DebtToEquityRatio">
+                                    <label for = "DebtToEquityRatioMedium">Medium</label>
+                                    <input type = "radio" id = "DebtToEquityRatioWeak" name = "DebtToEquityRatio">
+                                    <label for = "DebtToEquityRatioWeak">Weak</label>
+                                </p>
+                            </div> 
+                            <div id = "GrossMargin" class = "hidden">
+                                <p>
+                                    <h4>Gross Margin</h4>
+                                    <input type = "radio" id = "GrossMarginStrong" name = "GrossMargin">
+                                    <label for = "GrossMarginStrong">Strong</label>
+                                    <input type = "radio" id = "GrossMarginMedium" name = "GrossMargin">
+                                    <label for = "GrossMarginMedium">Medium</label>
+                                    <input type = "radio" id = "GrossMarginWeak" name = "GrossMargin">
+                                    <label for = "GrossMarginWeak">Weak</label>
+                                </p>
+                            </div>
+                            <div id = "OperatingMargin" class = "hidden">
+                                <p>
+                                    <h4>Operating Margin</h4>
+                                    <input type = "radio" id = "OperatingMarginStrong" name = "OperatingMargin">
+                                    <label for = "OperatingMarginStrong">Strong</label>
+                                    <input type = "radio" id = "OperatingMarginMedium" name = "OperatingMargin">
+                                    <label for = "OperatingMarginMedium">Medium</label>
+                                    <input type = "radio" id = "OperatingMarginWeak" name = "OperatingMargin">
+                                    <label for = "OperatingMarginWeak">Weak</label>
+                                </p>
+                            </div>
+                            <div id = "EbitMargin" class = "hidden">
+                                <p>
+                                    <h4>Ebit Margin</h4>
+                                    <input type = "radio" id = "EbitMarginStrong" name = "EbitMargin">
+                                    <label for = "EbitMarginStrong">Strong</label>
+                                    <input type = "radio" id = "EbitMarginMedium" name = "EbitMargin">
+                                    <label for = "EbitMarginMedium">Medium</label>
+                                    <input type = "radio" id = "EbitMarginWeak" name = "EbitMargin">
+                                    <label for = "EbitMarginWeak">Weak</label>
+                                </p>
+                            </div>
+                            <div id = "EbitdaMargin" class = "hidden">
+                                <p>
+                                    <h4>Ebitda Margin</h4>
+                                    <input type = "radio" id = "EbitdaMarginStrong" name = "EbitdaMargin">
+                                    <label for = "EbitdaMarginStrong">Strong</label>
+                                    <input type = "radio" id = "EbitdaMarginMedium" name = "EbitdaMargin">
+                                    <label for = "EbitdaMarginMedium">Medium</label>
+                                    <input type = "radio" id = "EbitdaMarginWeak" name = "EbitdaMargin">
+                                    <label for = "EbitdaMarginWeak">Weak</label>
+                                </p>
+                            </div>
+                            <div id = "PretaxProfitMargin" class = "hidden">
+                                <p>
+                                    <h4>Pretax Profit Margin</h4>
+                                    <input type = "radio" id = "PretaxProfitMarginStrong" name = "PretaxProfitMargin">
+                                    <label for = "PretaxProfitMarginStrong">Strong</label>
+                                    <input type = "radio" id = "PretaxProfitMarginMedium" name = "PretaxProfitMargin">
+                                    <label for = "PretaxProfitMarginMedium">Medium</label>
+                                    <input type = "radio" id = "PretaxProfitMarginWeak" name = "PretaxProfitMargin">
+                                    <label for = "PretaxProfitMarginWeak">Weak</label>
+                                </p>
+                            </div>
+                            <div id = "NetProfitMargin" class = "hidden">
+                                <p>
+                                    <h4>Net Profit Margin</h4>
+                                    <input type = "radio" id = "NetProfitMarginStrong" name = "NetProfitMargin">
+                                    <label for = "NetProfitMarginStrong">Strong</label>
+                                    <input type = "radio" id = "NetProfitMarginMedium" name = "NetProfitMargin">
+                                    <label for = "NetProfitMarginMedium">Medium</label>
+                                    <input type = "radio" id = "NetProfitMarginWeak" name = "NetProfitMargin">
+                                    <label for = "NetProfitMarginWeak">Weak</label>
+                                </p>
+                            </div>
+                            <div id = "AssetTurnover" class = "hidden">
+                                <p>
+                                    <h4>Asset Turnover</h4>
+                                    <input type = "radio" id = "AssetTurnoverStrong" name = "AssetTurnover">
+                                    <label for = "AssetTurnoverStrong">Strong</label>
+                                    <input type = "radio" id = "AssetTurnoverMedium" name = "AssetTurnover">
+                                    <label for = "AssetTurnoverMedium">Medium</label>
+                                    <input type = "radio" id = "AssetTurnoverWeak" name = "AssetTurnover">
+                                    <label for = "AssetTurnoverWeak">Weak</label>
+                                </p>
+                            </div>
+                            <div id = "InventoryTurnoverRatio" class = "hidden">
+                                <p>
+                                    <h4>Inventory Turnover Ratio</h4>
+                                    <input type = "radio" id = "InventoryTurnoverRatioStrong" name = "InventoryTurnoverRatio">
+                                    <label for = "InventoryTurnoverRatioStrong">Strong</label>
+                                    <input type = "radio" id = "InventoryTurnoverRatioMedium" name = "InventoryTurnoverRatio">
+                                    <label for = "InventoryTurnoverRatioMedium">Medium</label>
+                                    <input type = "radio" id = "InventoryTurnoverRatioWeak" name = "InventoryTurnoverRatio">
+                                    <label for = "InventoryTurnoverRatioWeak">Weak</label>
+                                </p>
+                            </div>
+                            <div id = "ReceivableTurnover" class = "hidden">
+                                <p>
+                                    <h4>Receivable Turnover</h4>
+                                    <input type = "radio" id = "ReceivableTurnoverStrong" name = "ReceivableTurnover">
+                                    <label for = "ReceivableTurnoverStrong">Strong</label>
+                                    <input type = "radio" id = "ReceivableTurnoverMedium" name = "ReceivableTurnover">
+                                    <label for = "ReceivableTurnoverMedium">Medium</label>
+                                    <input type = "radio" id = "ReceivableTurnoverWeak" name = "ReceivableTurnover">
+                                    <label for = "ReceivableTurnoverWeak">Weak</label>
+                                </p>
+                            </div>
+                            <div id = "DaysSalesInReceivables" class = "hidden">
+                                <p>
+                                    <h4>Day Sales In Receivables</h4>
+                                    <input type = "radio" id = "DaysSalesInReceivablesStrong" name = "DaysSalesInReceivables">
+                                    <label for = "DaysSalesInReceivablesStrong">Strong</label>
+                                    <input type = "radio" id = "DaysSalesInReceivablesMedium" name = "DaysSalesInReceivables">
+                                    <label for = "DaysSalesInReceivablesMedium">Medium</label>
+                                    <input type = "radio" id = "DaysSalesInReceivablesWeak" name = "DaysSalesInReceivables">
+                                    <label for = "DaysSalesInReceivablesWeak">Weak</label>
+                                </p>
+                            </div>
+                            <div id = "ReturnOnEquity" class = "hidden">
+                                <p>
+                                    <h4>Return On Equity</h4>
+                                    <input type = "radio" id = "ReturnOnEquityStrong" name = "ReturnOnEquity">
+                                    <label for = "ReturnOnEquityStrong">Strong</label>
+                                    <input type = "radio" id = "ReturnOnEquityMedium" name = "ReturnOnEquity">
+                                    <label for = "ReturnOnEquityMedium">Medium</label>
+                                    <input type = "radio" id = "ReturnOnEquityWeak" name = "ReturnOnEquity">
+                                    <label for = "ReturnOnEquityWeak">Weak</label>
+                                </p>
+                            </div>
+                            <div id = "ReturnOnTangibleEquity" class = "hidden">
+                                <p>
+                                    <h4>Return On Tangible Equity</h4>
+                                    <input type = "radio" id = "ReturnOnTangibleEquityStrong" name = "ReturnOnTangibleEquity">
+                                    <label for = "ReturnOnTangibleEquityStrong">Strong</label>
+                                    <input type = "radio" id = "ReturnOnTangibleEquityMedium" name = "ReturnOnTangibleEquity">
+                                    <label for = "ReturnOnTangibleEquityMedium">Medium</label>
+                                    <input type = "radio" id = "ReturnOnTangibleEquityWeak" name = "ReturnOnTangibleEquity">
+                                    <label for = "ReturnOnTangibleEquityWeak">Weak</label>
+                                </p>
+                            </div>
+                            <div id = "ReturnOnAssets" class = "hidden">
+                                <p>
+                                    <h4>Return On Assets</h4>
+                                    <input type = "radio" id = "ReturnOnAssetsStrong" name = "ReturnOnAssets">
+                                    <label for = "ReturnOnAssetsStrong">Strong</label>
+                                    <input type = "radio" id = "ReturnOnAssetsMedium" name = "ReturnOnAssets">
+                                    <label for = "ReturnOnAssetsMedium">Medium</label>
+                                    <input type = "radio" id = "ReturnOnAssetsWeak" name = "ReturnOnAssets">
+                                    <label for = "ReturnOnAssetsWeak">Weak</label>
+                                </p>
+                            </div>
+                            <div id = "ReturnOnInvestment" class = "hidden">
+                                <p>
+                                    <h4>Return On Investment</h4>
+                                    <input type = "radio" id = "ReturnOnInvestmentStrong" name = "ReturnOnInvestment">
+                                    <label for = "ReturnOnInvestmentStrong">Strong</label>
+                                    <input type = "radio" id = "ReturnOnInvestmentMedium" name = "ReturnOnInvestment">
+                                    <label for = "ReturnOnInvestmentMedium">Medium</label>
+                                    <input type = "radio" id = "ReturnOnInvestmentWeak" name = "ReturnOnInvestment">
+                                    <label for = "ReturnOnInvestmentWeak">Weak</label>
+                                </p>
+                            </div>
+                            <div id = "BookValuePerShare" class = "hidden">
+                                <p>
+                                    <h4>Book Value Per Share</h4>
+                                    <input type = "radio" id = "BookValuePerShareStrong" name = "BookValuePerShare">
+                                    <label for = "BookValuePerShareStrong">Strong</label>
+                                    <input type = "radio" id = "BookValuePerShareMedium" name = "BookValuePerShare">
+                                    <label for = "BookValuePerShareMedium">Medium</label>
+                                    <input type = "radio" id = "BookValuePerShareWeak" name = "BookValuePerShare">
+                                    <label for = "BookValuePerShareWeak">Weak</label>
+                                </p>
+                            </div>
+                            <div id = "OperatingCashFlowPerShare" class = "hidden">
+                                <p>
+                                    <h4>Operating Cash Flow Per Share</h4>
+                                    <input type = "radio" id = "OperatingCashFlowPerShareStrong" name = "OperatingCashFlowPerShare">
+                                    <label for = "OperatingCashFlowPerShareStrong">Strong</label>
+                                    <input type = "radio" id = "OperatingCashFlowPerShareMedium" name = "OperatingCashFlowPerShare">
+                                    <label for = "OperatingCashFlowPerShareMedium">Medium</label>
+                                    <input type = "radio" id = "OperatingCashFlowPerShareWeak" name = "OperatingCashFlowPerShare">
+                                    <label for = "OperatingCashFlowPerShareWeak">Weak</label>
+                                </p>
+                            </div>
+                            <div id = "FreeCashFlowPerShare" class = "hidden">
+                                <p>
+                                    <h4>Free Cash Flow Per Share</h4>
+                                    <input type = "radio" id = "FreeCashFlowPerShareStrong" name = "FreeCashFlowPerShare">
+                                    <label for = "FreeCashFlowPerShareStrong">Strong</label>
+                                    <input type = "radio" id = "FreeCashFlowPerShareMedium" name = "FreeCashFlowPerShare">
+                                    <label for = "FreeCashFlowPerShareMedium">Medium</label>
+                                    <input type = "radio" id = "FreeCashFlowPerShareWeak" name = "FreeCashFlowPerShare">
+                                    <label for = "FreeCashFlowPerShareWeak">Weak</label>
+                                </p>
+                            </div>
+                            <p>
+                                <h4>Price Prediction</h4>
+                                <input type = "radio" id = "PricePredictionRise" name = "PricePrediction">
+                                <label for = "PricePredictionRise">Rise</label>
+                                <input type = "radio" id = "PricePredictionFall" name = "PricePrediction">
+                                <label for = "PricePredictionFall">Fall</label>
+                            </p>
+                            <div>
+                                <button type="button" class = "spacing upper" id = "submitButton">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id = "infofeedback" class = "hidden">
+                        <h3 class = "spacing">Stock Evaluation Feedback</h2>
+                        <h3>Your Evaluation:</h3>
+                        <div>
+                            <h4 id = "userinput0header"></h4>
+                            <p> 
+                                <input type = "radio" id = "userinput0Strong" name = "userinput0">
+                                <label for = "userinput0Strong">Strong</label>
+                                <input type = "radio" id = "userinput0Medium" name = "userinput0">
+                                <label for = "userinput0Medium">Medium</label>
+                                <input type = "radio" id = "userinput0Weak" name = "userinput0">
+                                <label for = "userinput0Weak">Weak</label>
+                            </p>
+                            <p id = "userinput0feedback"></p>
+                        </div>
+                        <div>
+                            <h4 id = "userinput1header"></h4>
+                            <p> 
+                                <input type = "radio" id = "userinput1Strong" name = "userinput1">
+                                <label for = "userinput1Strong">Strong</label>
+                                <input type = "radio" id = "userinput1Medium" name = "userinput1">
+                                <label for = "userinput1Medium">Medium</label>
+                                <input type = "radio" id = "userinput1Weak" name = "userinput1">
+                                <label for = "userinput1Weak">Weak</label>
+                                <p id = "userinput1feedback"></p>
+                            </p>
+                        </div>
+                        <div>
+                            <h4 id = "userinput2header"></h4>
+                            <p> 
+                                <input type = "radio" id = "userinput2Strong" name = "userinput2">
+                                <label for = "userinput2Strong">Strong</label>
+                                <input type = "radio" id = "userinput2Medium" name = "userinput2">
+                                <label for = "userinput2Medium">Medium</label>
+                                <input type = "radio" id = "userinput2Weak" name = "userinput2">
+                                <label for = "userinput2Weak">Weak</label>
+                            </p>
+                            <p id = "userinput2feedback"></p>
+                        </div>
+                        <h3>Stock Evaluator's Evaluation:</h3>
+                        <div>
+                            <h4 id = "input0header"></h4>
+                            <p> 
+                                <input type = "radio" id = "input0Strong" name = "input0">
+                                <label for = "input0Strong">Strong</label>
+                                <input type = "radio" id = "input0Medium" name = "input0">
+                                <label for = "input0Medium">Medium</label>
+                                <input type = "radio" id = "input0Weak" name = "input0">
+                                <label for = "input0Weak">Weak</label>
+                            </p>
+                        </div>
+                        <div>
+                            <h4 id = "input1header"></h4>
+                            <p> 
+                                <input type = "radio" id = "input1Strong" name = "input1">
+                                <label for = "input1Strong">Strong</label>
+                                <input type = "radio" id = "input1Medium" name = "input1">
+                                <label for = "input1Medium">Medium</label>
+                                <input type = "radio" id = "input1Weak" name = "input1">
+                                <label for = "input1Weak">Weak</label>
+                            </p>
+                        </div>
+                        <div>
+                            <h4 id = "input2header"></h4>
+                            <p> 
+                                <input type = "radio" id = "input2Strong" name = "input2">
+                                <label for = "input2Strong">Strong</label>
+                                <input type = "radio" id = "input2Medium" name = "input2">
+                                <label for = "input2Medium">Medium</label>
+                                <input type = "radio" id = "input2Weak" name = "input2">
+                                <label for = "input2Weak">Weak</label>
+                            </p>
+                        </div>
+                        <p>If you are unsure about any of the fundamental indicators, 
+                            please refer to the glossary for more information
+                        </p>
+                        <button type = "button" class = "spacing" id = "finishButton">Finish</button>
+                    </div>
+                </div>
+            </section>
+        </div>
     </div>
 </body>
 </html>

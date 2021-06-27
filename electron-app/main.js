@@ -1,5 +1,4 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
-const fs = require('fs')
 const path = require('path')
 const csvHandler = require('./csvHandler.js')
 
@@ -11,7 +10,7 @@ function sendDataToRenderer(win, data, channel) {
     win.webContents.send(channel, data)
 }
 
-function createWindow() {
+function createAppWindow() {
     const win = new BrowserWindow({
         width: 800,
         height: 600,
@@ -28,10 +27,11 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
-    createWindow()
+    //showAuthWindow()
+    createAppWindow()
     app.on('activate', () => {
         if(BrowserWindow.getAllWindows().length == 0) {
-            createWindow()
+            createAppWindow()
         }
     })
     console.log(`App ready`)
@@ -60,4 +60,15 @@ ipcMain.on('priceData', (event, message) => {
     message[1],
     sendDataToRenderer)
 })
+
+//Process correlation CSV data upon receiving message from training mode window
+ipcMain.on('correlationData', (event, message) => {
+    csvHandler.readCorrelationCSVFile(__dirname + '/assets/localdata/Correlation/' + message + ' Correlation Coefficient Data.csv',
+    'utf-8',
+    winarray[0],
+    sendDataToRenderer)
+})
+
+console.log("")
+
 

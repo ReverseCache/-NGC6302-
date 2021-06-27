@@ -89,6 +89,11 @@ input, select, textarea {
 	overflow: hidden;
 }
 
+.hidden {
+	display: none;
+	overflow: hidden;
+}
+
 .spacing  {
 	margin: 1em 0 2em 0;
 }
