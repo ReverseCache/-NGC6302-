@@ -1,9 +1,9 @@
 const axios = require('axios')
 const bluebird = require('bluebird')
+const dateHandler = require('./dateHandler.js')
 
 /* TODO:
     Note: Right now we are using free API Alpha Vantage Key
-    Probably need a better way of error handling
 */
 
 function getYear(year) {
@@ -216,7 +216,6 @@ function getCashData(ticker, year, callBack) {
         for (let x = 0; x < 29; x++) {
             array.push(eval(`data${x}`))
         }
-
         callBack(null, array, 'cdata')
     }).catch((error) => {
         if (error.response) {
@@ -227,11 +226,137 @@ function getCashData(ticker, year, callBack) {
             console.log(error.request)
         } else {
             console.log('Error', error.message)
+        }       
+    })
+}
+
+//Get user data from the Heroku Node.js backend
+function getUserData(userId) {
+    axios.get(`https://orbital-electron.herokuapp.com/users/${userId}`).then(res => {
+        console.log(res.data[0])
+        console.log(res.data[0].user_id)
+        console.log(res.data[0].name)
+    }).catch(error => {
+        if (error.response) {
+            console.log(error.response.data)
+            console.log(error.response.status)
+            console.log(error.response.headers)
+        } else if (error.request) {
+            console.log(error.request)
+        } else {
+            console.log('Error', error.message)
         }
-        
+    })
+}
+
+//Post user data to the Heroku Node.js backend
+function postUserData(userId, name) {
+    axios.post(`https://orbital-electron.herokuapp.com/users/${userId}/names/${name}`, {
+        "userId": userId,
+        "name": name
+    }).then(res => {
+        console.log(res)
+    }).catch(error => {
+        if (error.response) {
+            console.log(error.response.data)
+            console.log(error.response.status)
+            console.log(error.response.headers)
+        } else if (error.request) {
+            console.log(error.request)
+        } else {
+            console.log('Error', error.message)
+        }
+    })
+}
+
+//Get session data from the Heroku Node.js backend
+function getSessionData(sessionId) {
+    axios.get(`https://orbital-electron.herokuapp.com/sessions/${sessionId}`).then(res => {
+        console.log(res.data)
+        console.log(res.data[0].session_id)
+        console.log(res.data[0].user_id)
+        console.log(res.data[0].date)
+        console.log(res.data[0].time)
+        console.log(res.data[0].indicator1)
+        console.log(res.data[0].indicator2)
+        console.log(res.data[0].indicator3)
+        console.log(res.data[0].indicator1_value)
+        console.log(res.data[0].indicator2_value)
+        console.log(res.data[0].indicator3_value)
+        console.log(res.data[0].indicator1_eval_value)
+        console.log(res.data[0].indicator2_eval_value)
+        console.log(res.data[0].indicator3_eval_value)
+    }).catch(error => {
+        if (error.response) {
+            console.log(error.response.data)
+            console.log(error.response.status)
+            console.log(error.response.headers)
+        } else if (error.request) {
+            console.log(error.request)
+        } else {
+            console.log('Error', error.message)
+        }
+    })
+}
+
+//Need to create date and time handlers
+function postSessionData(userId, dataObject) {
+    let sessionId = userId + dateHandler.getDate() + dateHandler.getTime()
+    let indicator1 = dataObject['indicators'][0]
+    let indicator2 = dataObject['indicators'][1]
+    let indicator3 = dataObject['indicators'][2]
+    axios.post(`https://orbital-electron.herokuapp.com/sessions/${sessionId}`, {
+        "sessionId" : sessionId,
+        "userId": userId, 
+        "date" : dateHandler.getDate(), 
+        "time" : dateHandler.getTime(),
+        "indicator1": dataObject['indicators'][0],
+        "indicator2": dataObject['indicators'][1],
+        "indicator3": dataObject['indicators'][2],
+        "indicator1Value": dataObject[indicator1]['indicatorStrength'],
+        "indicator2Value": dataObject[indicator2]['indicatorStrength'],
+        "indicator3Value": dataObject[indicator3]['indicatorStrength'],
+        "indicator1EvalValue": dataObject[indicator1]['indicatorCorrelationStrength'],
+        "indicator2EvalValue": dataObject[indicator2]['indicatorCorrelationStrength'],
+        "indicator3EvalValue": dataObject[indicator3]['indicatorCorrelationStrength']
+    }).then(res => {
+        console.log(res)
+    }).catch(error => {
+        if (error.response) {
+            console.log(error.response.data)
+            console.log(error.response.status)
+            console.log(error.response.headers)
+        } else if (error.request) {
+            console.log(error.request)
+        } else {
+            console.log('Error', error.message)
+        }
+    }) 
+}
+
+//Get session history data from the Heroku Node.js backend
+function getSessionHistoryData(userId) {
+    axios.get(`https://orbital-electron.herokuapp.com/session-histories/users/${userId}`).then(res => {
+        console.log(res.data[0])
+        console.log(res.data[1])
+    }).catch(error => {
+        if (error.response) {
+            console.log(error.response.data)
+            console.log(error.response.status)
+            console.log(error.response.headers)
+        } else if (error.request) {
+            console.log(error.request)
+        } else {
+            console.log('Error', error.message)
+        }
     })
 }
 
 module.exports.getBalanceData = getBalanceDataPromise
 module.exports.getIncomeData= getIncomeDataPromise
 module.exports.getCashData = getCashDataPromise
+module.exports.getUserData = getUserData
+module.exports.postUserData = postUserData
+module.exports.getSessionData = getSessionData
+module.exports.postSessionData = postSessionData
+module.exports.getSessionHistoryData = getSessionHistoryData

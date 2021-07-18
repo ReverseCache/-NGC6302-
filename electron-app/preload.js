@@ -1,13 +1,19 @@
 const { Chart } = require('chart.js')
-const { ipcRenderer, ipcMain } = require('electron')
+const { ipcRenderer} = require('electron')
 const httpHandler = require('./httpHandler.js')
 
 /*TODO:
-    Set up dashboard and login page
+    Implement authentication
+    Integrate Weather API into Dashboard (With icons)
+    Write the UI for session history
     Implement testing
 */
 
-var stockTicker = null;
+var stockTicker = null
+
+//Sample Integration Values for Database
+var userId = 1
+var loggedIn = false;
 
 //Generate the three fundamental indicators to assess
 function generateFundamentalScenario(dataObject) {
@@ -82,8 +88,8 @@ function generateFundamentalScenario(dataObject) {
         }
         if (array.indexOf(string) === -1) {
             if (!(dataObject[string] === undefined || dataObject[string] === '')) {
-                console.log("Chosen Indicator: " + string)
-                console.log("Chosen Indicator Value: " + dataObject[string])
+                // console.log("Chosen Indicator: " + string)
+                // console.log("Chosen Indicator Value: " + dataObject[string])
                 array.push(string)
             }
         }
@@ -142,6 +148,11 @@ function setupSubmitButton(array, callBack) {
         let feedbackDataObject = generateFeedback(compiledDataObject)
         hideFundamentalScenario(indicatorArray)
         displayFeedBack(feedbackDataObject)
+
+        //If logged in, send session data to Node.js backend
+        if (loggedIn == true) {
+            httpHandler.postSessionData(userId, feedbackDataObject)
+        }
     }
 }
 
@@ -193,16 +204,7 @@ function generateFeedback(compiledDataObject) {
                 'indicatorStrength': indicatorStrength
             }
         }
-
-        //Logging for debugging purposes
-        console.log("Indicator Strength: " + indicatorStrength)
-        console.log("Indicator Name: " + indicatorName)
-        console.log("Indicator Correlation Value: " + indicatorCorrelationValue)
-
-        //Logging feedback object for sanity check
-        console.log("Feedback: " + feedbackDataObject[indicatorName]['feedback'])
     }
-    console.log("User Price Prediction: " + pricePrediction)
 
     return feedbackDataObject
 }
@@ -409,17 +411,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
     let gbutton = document.getElementById("gbutton")
     gbutton.onclick = () => {
-        if(gbool == false) {
-            gbool = true
-            dbool = false
-            tbool = false  
-        }
-        dashboard.style.display = "none"
-        training.style.display = "none"
+        ipcRenderer.send('glossary', null)
     }
 })
 
-//Handle year and stock form submissions, behavior for the getData button, as well as begin chain to set up fundamental scenario
+//Handle year and stock form submissions, behavior for the getData and back buttons, as well as begin chain to set up fundamental scenario
 window.addEventListener('DOMContentLoaded', () => {
     
     let array = []
@@ -431,7 +427,6 @@ window.addEventListener('DOMContentLoaded', () => {
         let input = form.children[0]
         let stockname = input.value.toString()
         array[0] = stockname
-        console.log(array[0])
         beginbutton.disabled = false
     }
 
@@ -441,7 +436,6 @@ window.addEventListener('DOMContentLoaded', () => {
         e.preventDefault()
         let year = parseInt(select.value)
         array[1] = year
-        console.log(array[1])
     }
 
     //Set up begin collapsible button
@@ -463,7 +457,6 @@ window.addEventListener('DOMContentLoaded', () => {
         stockTicker = array[0]
         
         //Generate Fundamental Indicator Scenarios
-        console.log(stockTicker)
         ipcRenderer.send('correlationData', stockTicker)
     }
 
@@ -507,6 +500,26 @@ window.addEventListener('DOMContentLoaded', () => {
         ipcRenderer.send('priceData', array)
     }
 
+    //Set up back button to undo 
+    let backButton = document.getElementById("backButton")
+    backButton.style.margin = "1em 0 4em 0"
+    backButton.onclick = async(e) => {
+        let infocontent = document.getElementById("infocontent")
+        let infobody = document.getElementById("infobody")
+        if (infocontent.style.display != "none") {
+            console.log("backButton press hide infocontent")
+            infocontent.style.display = "none"
+        } else {
+            console.log("backButton press hide infobody")
+            infobody.style.display = "none"
+            let form = document.getElementById("stockform")
+            form.style.display = "block"
+            let beginButton = document.getElementById("beginButton")
+            beginButton.style.margin = "1em 0 4em 0"
+            beginButton.style.display = "block"
+        }
+    }
+
     //Set up finishButton for feedback portion => implement resetting of all variables
     let finishButton = document.getElementById("finishButton")
     finishButton.onclick = async(e) => {
@@ -516,6 +529,7 @@ window.addEventListener('DOMContentLoaded', () => {
         form.style.display = "block"
         form.value = ""
         replaceText("stock", "Stock:")
+        replaceText("year", "Year:")
         let beginButton = document.getElementById("beginButton")
         beginButton.style.margin = "1em 0 4em 0"
         beginButton.style.display = "block"

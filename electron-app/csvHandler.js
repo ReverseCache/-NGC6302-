@@ -110,7 +110,6 @@ function handlePriceArray(arr, year) {
 function handleCorrelationArray(arr) {
     headers = arr[1]
     data = arr[2]
-    //console.log(data[0][1])
     let dataObject = {
     } 
 
