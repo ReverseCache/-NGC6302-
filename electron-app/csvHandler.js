@@ -134,9 +134,9 @@ function handleCorrelationArray(arr) {
     }
     for (let i = 1; i < headers.length; i++) {
         dataObject[headers[i]] = data[0][i]
-        console.log(headers[i]) 
-        console.log(data[0][i])
-        console.log(dataObject[headers[i]])
+        // console.log(headers[i]) 
+        // console.log(data[0][i])
+        // console.log(dataObject[headers[i]])
     }
     return dataObject
 }
@@ -151,3 +151,10 @@ function toCamelCaps(str) {
 module.exports.readIndicatorCSVFile = readIndicatorCSVFilePromise
 module.exports.readPriceCSVFile = readPriceCSVFilePromise
 module.exports.readCorrelationCSVFile = readCorrelationCSVFilePromise
+module.exports.getYear = getYear
+module.exports.readCSVFile = readCSVFile
+module.exports.toCamelCaps = toCamelCaps
+module.exports.processCSVData = processCSVData
+module.exports.handleCorrelationArray = handleCorrelationArray
+module.exports.handleFundamentalArray = handleFundamentalArray
+module.exports.handlePriceArray = handlePriceArray

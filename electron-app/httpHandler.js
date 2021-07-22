@@ -360,3 +360,4 @@ module.exports.postUserData = postUserData
 module.exports.getSessionData = getSessionData
 module.exports.postSessionData = postSessionData
 module.exports.getSessionHistoryData = getSessionHistoryData
+module.exports.getYear = getYear

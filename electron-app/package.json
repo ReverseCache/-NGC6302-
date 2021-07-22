@@ -6,7 +6,8 @@
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
-    "make": "electron-forge make"
+    "make": "electron-forge make",
+    "test": "mocha"
   },
   "keywords": [],
   "author": "NGC 6302",
@@ -26,6 +27,7 @@
     "electron-squirrel-startup": "^1.0.0",
     "jwt-decode": "^3.1.2",
     "keytar": "^7.5.0",
+    "mocha": "^9.0.2",
     "node-addon-api": "^3.0.1",
     "prebuild-install": "^6.0.1"
   },
