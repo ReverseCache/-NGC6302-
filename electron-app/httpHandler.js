@@ -29,7 +29,7 @@ getCashDataPromise = bluebird.promisify(getCashData, {multiArgs: true})
 //Getting all the data from Alpha Vantage and return in an array
 //Send IBM Balance Sheet HTTP GET Request to Alpha Vantage
 function getBalanceData(ticker, year, callBack) {
-    axios.get(`https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol=${ticker}&apikey=JINHJW1NEJGW5K8G`).then((res) => {
+    axios.get(`https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol=${ticker}&apikey=ALPHA_VANTAGE_API`).then((res) => {
 
         var index = getYear(year)
 
