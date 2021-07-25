@@ -102,6 +102,26 @@ input, select, textarea {
 	margin: 4em 0 1em 0;
 }
 
+div.container{
+	width: 80%
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding : 10px;
+    margin-left: -5px;
+    display: inline;
+    border: 0px;
+	text-decoration: underline;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    border: 0px;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+	color: black;
+}
+
 /* Basic */
 
 	@-ms-viewport {

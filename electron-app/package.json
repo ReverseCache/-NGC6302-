@@ -6,7 +6,8 @@
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
-    "make": "electron-forge make"
+    "make": "electron-forge make",
+    "test": "mocha"
   },
   "keywords": [],
   "author": "NGC 6302",
@@ -20,14 +21,24 @@
     "electron": "^12.0.7"
   },
   "dependencies": {
+    "@supercharge/request-ip": "^1.1.2",
     "axios": "^0.21.1",
     "bluebird": "^3.7.2",
     "chart.js": "^3.3.2",
+    "datatables.net": "^1.10.25",
+    "datatables.net-dt": "^1.1.0",
+    "dotenv": "^10.0.0",
+    "electron-auth0-login": "^2.0.2",
     "electron-squirrel-startup": "^1.0.0",
-    "jwt-decode": "^3.1.2",
+    "jquery": "^3.6.0",
+    "jwt-decode": "^2.2.0",
     "keytar": "^7.5.0",
+    "mocha": "^9.0.2",
     "node-addon-api": "^3.0.1",
-    "prebuild-install": "^6.0.1"
+    "node-iplocate": "^1.0.2",
+    "node-machine-id": "^1.1.12",
+    "prebuild-install": "^6.0.1",
+    "uuid": "^8.3.2"
   },
   "config": {
     "forge": {

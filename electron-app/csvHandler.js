@@ -18,7 +18,6 @@ function getYear(year) {
 readFilePromise = bluebird.promisify(fs.readFile)
 readIndicatorCSVFilePromise = bluebird.promisify(readIndicatorCSVFile)
 readPriceCSVFilePromise = bluebird.promisify(readPriceCSVFile)
-readCorrelationCSVFilePromise = bluebird.promisify(readCorrelationCSVFile)
 
 //Passes an array of indicator values for that year
 function readIndicatorCSVFile(fileURL, mimeType, win, year, callBack) {
@@ -41,10 +40,22 @@ function readPriceCSVFile(fileURL, mimeType, win, year, callBack) {
 }
 
 //Passes a javascript object with indicator names as keys and correlation value as value
-function readCorrelationCSVFile(fileURL, mimeType, win, callBack) {
-    readCSVFile(fileURL, mimeType).then((contents) => {
+function readCorrelationCSVFile(fileURL, mimeType) {
+    return readCSVFile(fileURL, mimeType).then((contents) => {
         dataObject = handleCorrelationArray(processCSVData(contents))
-        callBack(win, dataObject, 'correlationData') 
+        return new Promise((resolve, reject) => {
+            resolve(dataObject)
+        })
+    })
+}
+
+//Passes a javascript object with one keyvalue pair - sentimental outlook
+function readSentimentCSVFile(fileURL, mimeType) {
+    return readCSVFile(fileURL, mimeType).then((contents) => {
+        dataObject = handleSentimentalArray(processCSVData(contents))
+        return new Promise((resolve, reject) => {
+            resolve(dataObject)
+        })
     })
 }
 
@@ -110,7 +121,6 @@ function handlePriceArray(arr, year) {
 function handleCorrelationArray(arr) {
     headers = arr[1]
     data = arr[2]
-    //console.log(data[0][1])
     let dataObject = {
     } 
 
@@ -135,10 +145,22 @@ function handleCorrelationArray(arr) {
     }
     for (let i = 1; i < headers.length; i++) {
         dataObject[headers[i]] = data[0][i]
-        console.log(headers[i]) 
-        console.log(data[0][i])
-        console.log(dataObject[headers[i]])
     }
+    return dataObject
+}
+
+function handleSentimentalArray(arr) {
+    headers = arr[1]
+    data = arr[2]
+    let dataObject = {
+    }
+
+    for (let i = 0; i < headers.length; i++) {
+        headers = arr[1]
+        data = arr[2]
+        dataObject[headers[i]] = data[0][i]
+    }
+    
     return dataObject
 }
 
@@ -151,4 +173,12 @@ function toCamelCaps(str) {
 //Export the functions
 module.exports.readIndicatorCSVFile = readIndicatorCSVFilePromise
 module.exports.readPriceCSVFile = readPriceCSVFilePromise
-module.exports.readCorrelationCSVFile = readCorrelationCSVFilePromise
+module.exports.readCorrelationCSVFile = readCorrelationCSVFile
+module.exports.readSentimentCSVFile = readSentimentCSVFile
+module.exports.getYear = getYear
+module.exports.readCSVFile = readCSVFile
+module.exports.toCamelCaps = toCamelCaps
+module.exports.processCSVData = processCSVData
+module.exports.handleCorrelationArray = handleCorrelationArray
+module.exports.handleFundamentalArray = handleFundamentalArray
+module.exports.handlePriceArray = handlePriceArray
