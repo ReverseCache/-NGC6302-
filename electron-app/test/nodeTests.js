@@ -160,7 +160,7 @@ describe('csvHandler tests', function() {
     describe('readCorrelationCSVFile test', function() {
         it("should readCSVFile -> processCSVData -> handleCorrelationArray then callBack without error", function(done) {
             csvHandler.readCorrelationCSVFile(path.join(__dirname, 
-                '../assets/localdata/Correlation/IBM Correlation Coefficient Data.csv'), 'utf-8', null, done)
+                '../assets/localdata/Correlation/IBM Correlation Coefficient Data.csv'), 'utf-8').then(done())
         })
     })
 
@@ -271,43 +271,6 @@ describe('httpHandler tests', function() {
                 assert.equal(array[23], "11506000000")
                 assert.equal(array[24], "13356000000")
                 assert.equal(array[25], "9431000000")
-            })
-        })
-    })
-
-    describe('getIncomeData test', function() {
-        it("should return an array containing income data for year 2019", function() {
-            return httpHandler.getCashData('IBM', 2019).spread((array, string) => {
-                assert.equal(string, 'cdata')
-                assert.equal(array[0], "2019-12-31")
-                assert.equal(array[1], "USD")
-                assert.equal(array[2], "14770000000",)
-                assert.equal(array[3], "3234000000")
-                assert.equal(array[4], "None")
-                assert.equal(array[5], "-503000000")
-                assert.equal(array[6], "-569000000")
-                assert.equal(array[7], "6059000000")
-                assert.equal(array[8], "2286000000")
-                assert.equal(array[9], "-502000000")
-                assert.equal(array[10], "-67000000")
-                assert.equal(array[11], "9431000000")
-                assert.equal(array[12], "-26936000000")
-                assert.equal(array[13], "9042000000")
-                assert.equal(array[14], "-2597000000")
-                assert.equal(array[15], "1361000000")
-                assert.equal(array[16], "1361000000")
-                assert.equal(array[17], "None")
-                assert.equal(array[18], "5707000000")
-                assert.equal(array[19], "5707000000")
-                assert.equal(array[20], "None")
-                assert.equal(array[21], "None")
-                assert.equal(array[22], "31825000000")
-                assert.equal(array[23], "None")
-                assert.equal(array[24], "-1361000000")
-                assert.equal(array[25], "None")
-                assert.equal(array[26], "-3124000000")
-                assert.equal(array[27], "None")
-                assert.equal(array[28], "9431000000")
             })
         })
     })

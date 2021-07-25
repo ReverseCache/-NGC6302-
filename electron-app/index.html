@@ -24,7 +24,55 @@
             <section id = "intro" class = "wrapper style1 fullscreen fade-up">
                 <div class = "inner">
                     <h1>Dashboard</h1>
-                    <h2>Welcome to NGC 6302</h2>
+                    <p>Welcome to NGC 6302!</p>
+                    <div class = "spacing">
+                        <h3>Weather:</h3>
+                        <p id = "weather">Loading..</p>
+                        <p id = "temperature_main">Loading..</p>
+                        <p id = "temperature_feels">Loading..</p>
+                        <p id = "humidity"></p>
+                    </div>
+                    <div>
+                        <h3>User History:</h2>
+                        <table id = "table_id">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Stock Ticker</th>
+                                    <th>Indicator 1</th>
+                                    <th>Indicator 2</th>
+                                    <th>Indicator 3</th>
+                                    <th>Your Indicator 1 Value</th>
+                                    <th>Your Indicator 2 Value</th>
+                                    <th>Your Indicator 3 Value</th>
+                                    <th>Your Sentiment Value</th>
+                                    <th>Evaluator Indicator 1 Value</th>
+                                    <th>Evaluator Indicator 2 Value</th>
+                                    <th>Evaluator Indicator 3 Value</th>
+                                    <th>Evaluator Sentiment Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Loading..</td>
+                                    <td>Loading..</td>
+                                    <td>Loading..</td>
+                                    <td>Loading..</td>
+                                    <td>Loading..</td>
+                                    <td>Loading..</td>
+                                    <td>Loading..</td>
+                                    <td>Loading..</td>
+                                    <td>Loading..</td>
+                                    <td>Loading..</td>
+                                    <td>Loading..</td>
+                                    <td>Loading..</td>
+                                    <td>Loading..</td>
+                                    <td>Loading..</td>
+                                </tr>    
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </section>
         </div>
@@ -747,6 +795,16 @@
                                 <input type = "radio" id = "PricePredictionFall" name = "PricePrediction">
                                 <label for = "PricePredictionFall">Fall</label>
                             </p>
+                            <p>
+                                <h4>Sentiment Analysis</h4>
+                                <input type = "radio" id = "SentimentAnalysisPositive" name = "SentimentAnalysis">
+                                <label for = "SentimentAnalysisPositive">Positive</label>
+                                <input type = "radio" id = "SentimentAnalysisNeutral" name = "SentimentAnalysis">
+                                <label for = "SentimentAnalysisNeutral">Neutral</label>
+                                <input type = "radio" id = "SentimentAnalysisNegative" name = "SentimentAnalysis">
+                                <label for = "SentimentAnalysisNegative">Fall</label>
+                                <p>Assess articles during the time period and assess positive/negative sentiments about the stock</p> 
+                            </p>
                             <div>
                                 <button type="button" class = "spacing upper" id = "submitButton">Submit</button>
                             </div>
@@ -791,6 +849,18 @@
                             </p>
                             <p id = "userinput2feedback"></p>
                         </div>
+                        <div>
+                            <h4 id = "userinput3header">Sentiment Analysis</h4>
+                            <p>
+                                <input type = "radio" id = "userinput3Positive" name = "userinput3">
+                                <label for = "userinput3Positive">Positive</label>
+                                <input type = "radio" id = "userinput3Neutral" name = "userinput3">
+                                <label for = "userinput3Neutral">Neutral</label>
+                                <input type = "radio" id = "userinput3Negative" name = "userinput3">
+                                <label for = "userinput3Negative">Negative</label>
+                            </p>
+                            <p id = "userinput3feedback"></p>
+                        </div>
                         <h3>Stock Evaluator's Evaluation:</h3>
                         <div>
                             <h4 id = "input0header"></h4>
@@ -825,7 +895,18 @@
                                 <label for = "input2Weak">Weak</label>
                             </p>
                         </div>
-                        <p>If you are unsure about any of the fundamental indicators, 
+                        <div>
+                            <h3 id = "input3header">Sentiment Analysis</h3>
+                            <p>
+                                <input type = "radio" id = "input3Positive" name = "input3">
+                                <label for = "input3Positive">Positive</label>
+                                <input type = "radio" id = "input3Neutral" name = "input3">
+                                <label for = "input3Neutral">Neutral</label>
+                                <input type = "radio" id = "input3Negative" name = "input3">
+                                <label for = "input3Negative">Negative</label>
+                            </p>
+                        </div>
+                        <p>If you are unsure about any of the fundamental indicators,
                             please refer to the glossary for more information
                         </p>
                         <button type = "button" class = "spacing" id = "finishButton">Finish</button>

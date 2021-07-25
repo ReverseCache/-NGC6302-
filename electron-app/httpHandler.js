@@ -305,11 +305,12 @@ function postSessionData(userId, dataObject) {
     let indicator1 = dataObject['indicators'][0]
     let indicator2 = dataObject['indicators'][1]
     let indicator3 = dataObject['indicators'][2]
-    axios.post(`https://orbital-electron.herokuapp.com/sessions/${sessionId}`, {
+    return axios.post(`https://orbital-electron.herokuapp.com/sessions/${sessionId}`, {
         "sessionId" : sessionId,
         "userId": userId, 
         "date" : dateHandler.getDate(), 
         "time" : dateHandler.getTime(),
+        "stockTicker": dataObject['stockTicker'],
         "indicator1": dataObject['indicators'][0],
         "indicator2": dataObject['indicators'][1],
         "indicator3": dataObject['indicators'][2],
@@ -318,9 +319,17 @@ function postSessionData(userId, dataObject) {
         "indicator3Value": dataObject[indicator3]['indicatorStrength'],
         "indicator1EvalValue": dataObject[indicator1]['indicatorCorrelationStrength'],
         "indicator2EvalValue": dataObject[indicator2]['indicatorCorrelationStrength'],
-        "indicator3EvalValue": dataObject[indicator3]['indicatorCorrelationStrength']
+        "indicator3EvalValue": dataObject[indicator3]['indicatorCorrelationStrength'],
+        "sentimentAnalysisValue": dataObject['SentimentAnalysis']['sentimentAnalysisStrength'],
+        "sentimentAnalysisEvalValue": dataObject['SentimentAnalysis']['sentimentAnalysisEvalStrength']
     }).then(res => {
-        console.log(res)
+        return new Promise((resolve, reject) => {
+            res.data.date = res.data.date.split("T")[0]
+            res.data.indicator1 = toCamelCaseSpaces(res.data.indicator1)
+            res.data.indicator2 = toCamelCaseSpaces(res.data.indicator2)
+            res.data.indicator3 = toCamelCaseSpaces(res.data.indicator3)
+            resolve(res)
+        })
     }).catch(error => {
         if (error.response) {
             console.log(error.response.data)
@@ -336,9 +345,16 @@ function postSessionData(userId, dataObject) {
 
 //Get session history data from the Heroku Node.js backend
 function getSessionHistoryData(userId) {
-    axios.get(`https://orbital-electron.herokuapp.com/session-histories/users/${userId}`).then(res => {
-        console.log(res.data[0])
-        console.log(res.data[1])
+    return axios.get(`https://orbital-electron.herokuapp.com/session-histories/users/'${userId}'`).then(res => {
+        for(let i = 0; i < res.data.length; i++) {
+            res.data[i].date = res.data[i].date.split("T")[0]
+            res.data[i].indicator1 = toCamelCaseSpaces(res.data[i].indicator1)
+            res.data[i].indicator2 = toCamelCaseSpaces(res.data[i].indicator2)
+            res.data[i].indicator3 = toCamelCaseSpaces(res.data[i].indicator3)
+        }
+        return new Promise((resolve, reject) => {
+            resolve(res)
+        })
     }).catch(error => {
         if (error.response) {
             console.log(error.response.data)
@@ -349,6 +365,15 @@ function getSessionHistoryData(userId) {
         } else {
             console.log('Error', error.message)
         }
+    })
+}
+
+function toCamelCaseSpaces(string) {
+    // insert a space before all caps
+    return string.replace(/([A-Z])/g, ' $1')
+    // uppercase the first character
+    .replace(/^./, function(str) { 
+        return str.toUpperCase().slice(1);
     })
 }
 

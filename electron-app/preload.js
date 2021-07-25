@@ -1,19 +1,19 @@
 const { Chart } = require('chart.js')
 const { ipcRenderer} = require('electron')
 const httpHandler = require('./httpHandler.js')
+const weatherHandler = require('./weatherHandler.js')
+const idHandler = require('./idHandler.js')
 
 /*TODO:
+    Edit database to store the stockticker and sentiments inside session and also datatables
+    Either rewrite queries to order by DATE then TIME OR configure datatables to sort properly
     Implement authentication
-    Integrate Weather API into Dashboard (With icons)
-    Write the UI for session history
-    Implement testing
 */
 
 var stockTicker = null
 
-//Sample Integration Values for Database
-var userId = 1
-var loggedIn = false;
+//Id values for database
+var userId = idHandler.getMachineId()
 
 //Generate the three fundamental indicators to assess
 function generateFundamentalScenario(dataObject) {
@@ -88,8 +88,6 @@ function generateFundamentalScenario(dataObject) {
         }
         if (array.indexOf(string) === -1) {
             if (!(dataObject[string] === undefined || dataObject[string] === '')) {
-                // console.log("Chosen Indicator: " + string)
-                // console.log("Chosen Indicator Value: " + dataObject[string])
                 array.push(string)
             }
         }
@@ -114,7 +112,7 @@ function hideFundamentalScenario(array) {
     }
 }
 
-//Set up the submit button for fundamental user input and the callback to processs data
+//Set up the submit button for fundamental user input and the callback to processs data and to send data to nodejs backend
 function setupSubmitButton(array, callBack) {
     let submitButton = document.getElementById("submitButton")
     submitButton.onclick = async(e) => {
@@ -143,6 +141,14 @@ function setupSubmitButton(array, callBack) {
             }
         }
 
+        let sentimentAnalysis = document.getElementsByName("SentimentAnalysis")
+        for (let i = 0; i < sentimentAnalysis.length; i++) {
+            radioButton = sentimentAnalysis[i]
+            if (radioButton.checked) {
+                dataObject['SentimentAnalysis'] = radioButton.nextElementSibling.innerText
+            }
+        }
+
         //Pass the compiled dataObject containing user inputs to the callBack for processing
         let compiledDataObject = callBack(dataObject)
         let feedbackDataObject = generateFeedback(compiledDataObject)
@@ -150,9 +156,28 @@ function setupSubmitButton(array, callBack) {
         displayFeedBack(feedbackDataObject)
 
         //If logged in, send session data to Node.js backend
-        if (loggedIn == true) {
-            httpHandler.postSessionData(userId, feedbackDataObject)
-        }
+        //if (loggedIn == true) {
+            httpHandler.postSessionData(userId, feedbackDataObject).then(res => {
+                window.$ = window.jquery = require('./node_modules/jquery')
+                window.dt = require('./node_modules/datatables.net')()
+                dataTable.row.add({
+                    "date": res.data.date,
+                    "time": res.data.time,
+                    "stock_ticker": res.data.stockTicker,
+                    "indicator1": res.data.indicator1,
+                    "indicator2": res.data.indicator2,
+                    "indicator3": res.data.indicator3,
+                    "indicator1_value": res.data.indicator1Value,
+                    "indicator2_value": res.data.indicator2Value,
+                    "indicator3_value": res.data.indicator3Value,
+                    "sentiment_analysis_value": res.data.sentimentAnalysisEvalValue,
+                    "indicator1_eval_value": res.data.indicator1EvalValue,
+                    "indicator2_eval_value": res.data.indicator2EvalValue,
+                    "indicator3_eval_value": res.data.indicator3EvalValue,
+                    "sentiment_analysis_eval_value": res.data.sentimentAnalysisEvalValue
+                }).draw()
+            })
+        //}
     }
 }
 
@@ -174,6 +199,7 @@ function generateFeedback(compiledDataObject) {
     let pricePrediction = userDataObject['pricePrediction']
 
     let feedbackDataObject = {
+        'stockTicker': stockTicker,
         'indicators': Array.from(userDataObject['indicators'])
     }
 
@@ -203,6 +229,32 @@ function generateFeedback(compiledDataObject) {
                 'indicatorCorrelationStrength' : indicatorCorrelationStrength,
                 'indicatorStrength': indicatorStrength
             }
+        }
+    }
+
+    let sentimentAnalysisStrength = userDataObject['SentimentAnalysis']
+    let sentimentAnalysisEvalValue = correlationDataObject['SentimentAnalysis']
+
+    let sentimentAnalysisEvalStrength = null
+    if (sentimentAnalysisEvalValue <= 0.2 && sentimentAnalysisEvalValue >= -0.2) {
+        sentimentAnalysisEvalStrength = 'Neutral' 
+    } else if (sentimentAnalysisEvalValue > 0.2) {
+        sentimentAnalysisEvalStrength = 'Positive'
+    } else {
+        sentimentAnalysisEvalStrength = 'Negative'
+    }
+
+    if (sentimentAnalysisEvalStrength == sentimentAnalysisStrength) {
+        feedbackDataObject['SentimentAnalysis'] = {
+            'feedback': "Good! Your evaluation of the sentiments of this stock in articles matches our stock evaluator.",
+            'sentimentAnalysisStrength': sentimentAnalysisStrength,
+            'sentimentAnalysisEvalStrength': sentimentAnalysisEvalStrength
+        }
+    } else {
+        feedbackDataObject['SentimentAnalysis'] = {
+            'feedback': "Unfortunately, your evaluation of the sentiments of this stock in articles does not match our stock evaluator.",
+            'sentimentAnalysisStrength': sentimentAnalysisStrength,
+            'sentimentAnalysisEvalStrength': sentimentAnalysisEvalStrength
         }
     }
 
@@ -254,8 +306,8 @@ function displayFeedBack(feedbackDataObject) {
 
         elements = document.getElementsByName("input" + i.toString())
         for (let j = 0; j < elements.length; j++) {
-            radioButton = elements[j]
-            label = radioButton.nextElementSibling
+            let radioButton = elements[j]
+            let label = radioButton.nextElementSibling
             if (indicatorCorrelationStrength == label.innerText) {
                 radioButton.checked = true
             } else {
@@ -264,12 +316,31 @@ function displayFeedBack(feedbackDataObject) {
             }
         }
     }
-}
 
-//Replace the text in the HTML with the data
-const replaceText = (selector, text) => {
-    const element = document.getElementById(selector)
-    if (element) element.innerText = text
+    let sentimentAnalysisStrength = feedbackDataObject['SentimentAnalysis']['sentimentAnalysisStrength']
+    let sentimentAnalysisEvalStrength = feedbackDataObject['SentimentAnalysis']['sentimentAnalysisEvalStrength']
+    let userelements = document.getElementsByName("userinput3")
+    let elements = document.getElementsByName("input3")
+    for (let i = 0; i < userelements.length; i++) {
+        let radioButton = userelements[i]
+        let label = radioButton.nextElementSibling
+        if (sentimentAnalysisStrength == label.innerText) {
+            radioButton.checked = true
+        } else {
+            radioButton.disabled = true
+            label.disabled = true
+        }
+        radioButton = elements[i]
+        label = radioButton.nextElementSibling
+        if (sentimentAnalysisEvalStrength == label.innerText) {
+            radioButton.checked = true
+            label.disabled = true
+        }
+    }
+
+    let feedback = feedbackDataObject['SentimentAnalysis']['feedback']
+        let p = document.getElementById("userinput3feedback")
+        p.innerText = feedback
 }
 
 //Display local CSV data
@@ -300,7 +371,7 @@ function writeErrorToTable(length, string, message) {
 //Chart variable
 var myChart = null
 
-// Chart JS Price Graph
+//Chart JS Price Graph
 function displayPriceChart(array) {
     if (myChart != null) {
         myChart.destroy()
@@ -343,6 +414,19 @@ function displayPriceChart(array) {
     })
 }
 
+//DataTable variable
+var dataTable = null;
+
+//Dashboard weather display
+function displayWeather() {
+    weatherHandler.getWeather().then(weatherObject => {
+        replaceText("weather", weatherObject['weather'])
+        replaceText("temperature_main", weatherObject['temperature_main'])
+        replaceText("temperature_feels", weatherObject['temperature_feels'])
+        replaceText("humidity", weatherObject['humidity'])
+    })
+}
+
 //When recieving a message on this channel display local indicator csv data
 ipcRenderer.on('indicatorData', (event, message) => {
     displayLocalData(message)
@@ -359,6 +443,10 @@ ipcRenderer.on('correlationData', (event, message) => {
     displayFundamentalScenario(array)
     storeUserDataObject = storeDataObjects(message)
     setupSubmitButton(array, storeUserDataObject)
+})
+
+ipcRenderer.on('sentimentalData', (event, message) => {
+
 })
 
 //Set up collapsible button for the tables
@@ -535,3 +623,56 @@ window.addEventListener('DOMContentLoaded', () => {
         beginButton.style.display = "block"
     }
 })
+
+//Handle Dashboard UI elements
+window.addEventListener('DOMContentLoaded', () => {
+
+    //Dashboard weather elements
+    displayWeather()
+
+    //Dashboard User History
+    httpHandler.getSessionHistoryData(userId).then(function(res) {
+        window.$ = window.jquery = require('./node_modules/jquery')
+        window.dt = require('./node_modules/datatables.net')()
+        dataTable = window.$('#table_id').DataTable({
+            "data": res.data,
+            "columns": [
+                {"data": "date"},
+                {"data": "time"},
+                {"data": "stock_ticker"},
+                {"data": "indicator1"},
+                {"data": "indicator2"},
+                {"data": "indicator3"},
+                {"data": "indicator1_value"},
+                {"data": "indicator2_value"},
+                {"data": "indicator3_value"},
+                {"data": "sentiment_analysis_value"},
+                {"data": "indicator1_eval_value"},
+                {"data": "indicator2_eval_value"},
+                {"data": "indicator3_eval_value"},
+                {"data": "sentiment_analysis_eval_value"}
+            ],
+            "order": [[0, "desc"], [1, "desc"]],
+            "nowrap": false,
+            "bFilter": true,
+            "ordering": true,
+            "select": true,
+            "compact": true,
+            "hover": true,
+            "stripe": true,
+            "row-border": true,
+            "order-column": true,
+            "scrollX": true,
+            "scrollY": true,
+            "language": {
+                "lengthMenu": "Show Number of Entries: _MENU_"
+            }
+        })
+    })
+})
+
+//Replace the text in the HTML with the data
+const replaceText = (selector, text) => {
+    const element = document.getElementById(selector)
+    if (element) element.innerText = text
+}

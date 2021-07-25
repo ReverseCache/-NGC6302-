@@ -1,12 +1,9 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 const csvHandler = require('./csvHandler.js')
-const httpHandler = require('./httpHandler.js')
-const dateHandler = require('./dateHandler.js')
 
 //Temp array to store windows
 var winarray = []
-var userId = 1
 
 //Communicates to renderer over a channel
 function sendDataToRenderer(win, data, channel) {
@@ -14,6 +11,7 @@ function sendDataToRenderer(win, data, channel) {
 }
 
 function createAppWindow() {
+    console.log(path.join(__dirname, 'preload.js')) 
     const win = new BrowserWindow({
         width: 800,
         height: 600,
@@ -22,7 +20,7 @@ function createAppWindow() {
         }
     })
 
-    win.loadFile('index.html')
+    win.loadFile('./index.html')
 
     //Add window to the windows array
     winarray[0] = win
@@ -72,7 +70,7 @@ ipcMain.on('glossary', (event, message) => {
 ipcMain.on('indicatorData', (event, message) => {
     csvHandler.readIndicatorCSVFile(__dirname + '/assets/localdata/Ratio/' + message[0] + ' Ratio Data From Macro.csv', 
         'utf-8', 
-        winarray[0],
+        winarray[0], 
         message[1],
         sendDataToRenderer)
 })
@@ -88,15 +86,12 @@ ipcMain.on('priceData', (event, message) => {
 
 //Process correlation CSV data upon receiving message from main window
 ipcMain.on('correlationData', (event, message) => {
-    csvHandler.readCorrelationCSVFile(__dirname + '/assets/localdata/Correlation/' + message + ' Correlation Coefficient Data.csv',
-    'utf-8',
-    winarray[0],
-    sendDataToRenderer)
+    csvHandler.readCorrelationCSVFile(__dirname + '/assets/localdata/Correlation/' + message + ' Correlation Coefficient Data.csv','utf-8')
+        .then(dataObject => {
+            csvHandler.readSentimentCSVFile(__dirname + '/assets/localdata/Sentiment/' + message + ' Sentiment Correlation Data.csv', 'utf-8')
+                .then(sentimentDataObject => {
+                    dataObject['SentimentAnalysis'] = sentimentDataObject['sentiment analysis']
+                    sendDataToRenderer(winarray[0], dataObject, 'correlationData')
+                })
+        })
 })
-
-// httpHandler.postUserData(3, "Keanu") => error is passed correctly
-// httpHandler.getUserData(1) => correct
-// httpHandler.getSessionData(1) => correct
-
-
-
