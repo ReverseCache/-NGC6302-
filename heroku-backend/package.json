@@ -1,0 +1,22 @@
+{
+  "name": "orbital-node-backend",
+  "version": "1.0.0",
+  "description": "Node.js app deployed on heroku to make queries upon receiving HTTP requests",
+  "main": "server.js",
+  "engines": {
+    "node": "14.17.x"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ryan Tan & Amruth Srivathsan",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "bufferutil": "^4.0.3",
+    "express": "^4.17.1",
+    "pg": "^8.6.0",
+    "utf-8-validate": "^5.0.5"
+  }
+}
